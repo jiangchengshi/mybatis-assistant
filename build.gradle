@@ -23,14 +23,15 @@ buildscript {
 
 allprojects {
     group = "cool.doudou"
-    version = "1.0.0"
+    version = "1.0.1-SNAPSHOT"
 }
 
 // 子模块配置
 subprojects {
     apply plugin: 'java-library'
-    apply plugin: "maven-publish"
-    apply plugin: "io.spring.dependency-management"
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+    apply plugin: 'io.spring.dependency-management'
 
     // 仓库配置
     repositories {
@@ -52,10 +53,14 @@ subprojects {
     dependencies {
     }
 
-    // 打包javadocJar任务
+    task sourcesJar(type: Jar) {
+        from sourceSets.main.allJava
+        classifier = 'sources'
+    }
+
     task javadocJar(type: Jar, dependsOn: javadoc) {
+        from javadoc
         classifier = 'javadoc'
-        from javadoc.destinationDir
     }
 
     // 解决javadoc打包乱码
@@ -71,12 +76,12 @@ subprojects {
             mavenJava(MavenPublication) {
                 groupId project.group
                 artifactId project.name
-                version project.version
+                version "${version}"
 
                 // components.java jar包 || components.auth war包
                 from components.java
 
-                // 增加 javadocJar 任务
+                artifact sourcesJar
                 artifact javadocJar
 
                 // 添加 pom 相关信息
@@ -84,7 +89,7 @@ subprojects {
                 pom {
                     name = "mybatis-assistant"
                     description = "Mybatis Assistant"
-                    url = "https://gitee.com/jiangchengshi/mybatis-assistant"
+                    url = "https://github.com/jiangchengshi/mybatis-assistant"
                     licenses {
                         license {
                             name = "The Apache License, Version 2.0"
@@ -93,38 +98,35 @@ subprojects {
                     }
                     developers {
                         developer {
-                            id = "doudou"
-                            name = "jiangcs"
+                            id = "jiangcs"
+                            name = "这么难演"
                             email = "jiangchengshi@gmail.com"
                         }
+                    }
+                    // 版本控制仓库地址
+                    scm {
+                        url = 'https://github.com/jiangchengshi/mybatis-assistant.git'
+                        connection = 'scm:git:git://github.com/jiangchengshi/mybatis-assistant.git'
+                        developerConnection = 'scm:git:ssh://git@github.com:jiangchengshi/mybatis-assistant.git'
                     }
                 }
             }
         }
 
         repositories {
-            // 本地仓库
-            mavenLocal()
-
-            // releases 仓库
             maven {
-                // 在对 task 中会生成对应的名称 publishMavenJavaPublicationToxxx
-                name 'release'
-                url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+                def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+                def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
                 credentials {
-                    username = System.getProperty("un")
-                    password = System.getProperty("pw")
-                }
-            }
-            // snapshots 仓库
-            maven {
-                name = 'snapshots'
-                url = 'https://oss.sonatype.org/content/repositories/snapshots/'
-                credentials {
-                    username = System.getProperty("un")
-                    password = System.getProperty("pw")
+                    username = sonatypeUsername
+                    password = sonatypePassword
                 }
             }
         }
+    }
+
+    signing {
+        sign publishing.publications.mavenJava
     }
 }
