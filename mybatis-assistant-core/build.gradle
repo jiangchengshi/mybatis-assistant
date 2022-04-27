@@ -1,0 +1,15 @@
+description("核心包")
+
+dependencies {
+    api project(":mybatis-assistant-annotation")
+    api project(":mybatis-assistant-expansion")
+    api("org.mybatis:mybatis:3.5.9")
+    api("org.mybatis:mybatis-spring:2.0.7")
+
+    testImplementation("mysql:mysql-connector-java:8.0.28")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,10 @@
+description("生成器")
+
+dependencies {
+    api project(":mybatis-assistant-core")
+    api project(":mybatis-assistant-expansion")
+    implementation("org.apache.velocity:velocity-engine-core:2.3")
+
+    testImplementation("mysql:mysql-connector-java:8.0.28")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+}

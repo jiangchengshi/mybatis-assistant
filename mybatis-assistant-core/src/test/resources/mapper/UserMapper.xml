@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cool.doudou.mybatis.assistant.core.mapper.UserMapper">
+    <select id="selectList" resultType="cool.doudou.mybatis.assistant.core.entity.User">
+        select *
+        from sys_user
+        ${q.sql}
+    </select>
+    <select id="selectPage" resultType="cool.doudou.mybatis.assistant.core.entity.User">
+        select *
+        from sys_user
+        ${q.sql}
+    </select>
+    <insert id="insert">
+        INSERT INTO sys_user(name,py,create_by,create_time)
+        VALUES(#{name},#{py},#{createBy},#{createTime})
+    </insert>
+    <insert id="batchInsert">
+        INSERT INTO sys_user(name,py,create_by,create_time)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+           (#{item.name},#{item.py},#{item.createBy},#{item.createTime})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,25 @@
+package ${package.parent}#if($package.module!='').${package.module}#end.${package.entity};
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
+#foreach($pkg in ${entityMap.importPackages})
+import ${pkg};
+#end
+
+/**
+ * $!{tableComment}
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Getter
+@Setter
+@ApiModel(value = "${instance.entityClass}对象", description = "$!{tableComment}")
+public class ${instance.entityClass} extends BaseEntity {
+#foreach($field in ${entityMap.fieldList})
+    @ApiModelProperty("${field.comment}")
+    private ${field.javaType} ${field.name};
+#end
+}

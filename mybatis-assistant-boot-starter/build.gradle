@@ -1,0 +1,8 @@
+description("Starter")
+
+dependencies {
+    api project(":mybatis-assistant-core")
+
+    implementation("org.springframework.boot:spring-boot-autoconfigure")
+    implementation "org.springframework.boot:spring-boot-starter-jdbc"
+}

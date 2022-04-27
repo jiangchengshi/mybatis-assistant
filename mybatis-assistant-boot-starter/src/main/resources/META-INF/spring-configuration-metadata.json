@@ -1,0 +1,44 @@
+{
+  "groups": [
+    {
+      "sourceType": "cool.doudou.mybatis.assistant.boot.starter.properties.MybatisAssistantProperties",
+      "name": "mybatis.assistant",
+      "type": "cool.doudou.mybatis.assistant.boot.starter.properties.MybatisAssistantProperties"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "cool.doudou.mybatis.assistant.boot.starter.properties.MybatisAssistantProperties",
+      "name": "mybatis.assistant.mapper-locations",
+      "description": "mapper文件位置",
+      "type": "java.lang.String",
+      "defaultValue": "classpath:mapper/*.xml"
+    },
+    {
+      "sourceType": "cool.doudou.mybatis.assistant.boot.starter.properties.MybatisAssistantProperties",
+      "name": "mybatis.assistant.interceptors",
+      "description": "插件集合",
+      "type": "java.lang.List",
+      "defaultValue": ""
+    }
+  ],
+  "hints": [
+    {
+      "name": "mybatis.assistant.interceptors",
+      "values": [
+        {
+          "name": "fieldFill",
+          "description": "字段填充插件"
+        },
+        {
+          "name": "desensitize",
+          "description": "脱敏插件"
+        },
+        {
+          "name": "log",
+          "description": "日志插件"
+        }
+      ]
+    }
+  ]
+}

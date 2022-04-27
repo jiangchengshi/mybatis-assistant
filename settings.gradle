@@ -1,0 +1,8 @@
+rootProject.name = 'mybatis-assistant'
+
+include 'mybatis-assistant-annotation'
+include 'mybatis-assistant-boot-starter'
+include 'mybatis-assistant-core'
+include 'mybatis-assistant-generator'
+include 'mybatis-assistant-expansion'
+

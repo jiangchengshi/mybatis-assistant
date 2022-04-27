@@ -1,0 +1,130 @@
+// 编译脚本
+buildscript {
+    ext {
+        depVersion = [
+                springBoot: "2.6.3",
+                lombok    : "1.18.22"
+        ]
+    }
+
+    // 仓库配置
+    repositories {
+        mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/spring' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${depVersion.springBoot}")
+    }
+}
+
+allprojects {
+    group = "cool.doudou"
+    version = "1.0.0"
+}
+
+// 子模块配置
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: "maven-publish"
+    apply plugin: "io.spring.dependency-management"
+
+    // 仓库配置
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://maven.aliyun.com/repository/spring" }
+        maven { url "https://maven.aliyun.com/repository/google" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    }
+
+    // 依赖管理
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${depVersion.springBoot}"
+        }
+    }
+
+    dependencies {
+    }
+
+    // 打包javadocJar任务
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    // 解决javadoc打包乱码
+    javadoc {
+        options.encoding = "UTF-8"
+        options.charSet = "UTF-8"
+        options.author = true
+        options.version = true
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                groupId project.group
+                artifactId project.name
+                version project.version
+
+                // components.java jar包 || components.auth war包
+                from components.java
+
+                // 增加 javadocJar 任务
+                artifact javadocJar
+
+                // 添加 pom 相关信息
+                // https://docs.gradle.org/current/dsl/org.gradle.api.publish.maven.MavenPublication.html
+                pom {
+                    name = "mybatis-assistant"
+                    description = "Mybatis Assistant"
+                    url = "https://gitee.com/jiangchengshi/mybatis-assistant"
+                    licenses {
+                        license {
+                            name = "The Apache License, Version 2.0"
+                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = "doudou"
+                            name = "jiangcs"
+                            email = "jiangchengshi@gmail.com"
+                        }
+                    }
+                }
+            }
+        }
+
+        repositories {
+            // 本地仓库
+            mavenLocal()
+
+            // releases 仓库
+            maven {
+                // 在对 task 中会生成对应的名称 publishMavenJavaPublicationToxxx
+                name 'release'
+                url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+                credentials {
+                    username = System.getProperty("un")
+                    password = System.getProperty("pw")
+                }
+            }
+            // snapshots 仓库
+            maven {
+                name = 'snapshots'
+                url = 'https://oss.sonatype.org/content/repositories/snapshots/'
+                credentials {
+                    username = System.getProperty("un")
+                    password = System.getProperty("pw")
+                }
+            }
+        }
+    }
+}
