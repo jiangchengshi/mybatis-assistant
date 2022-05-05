@@ -61,6 +61,7 @@ public class pageServiceTests {
     @Autowired
     private UserMapper userMapper;
 
+    @Test
     public void select(PageDTO<User> pageDTO) {
         LambdaQuery<User> lambdaQuery = new LambdaQuery<>();
         // pageDTO.data 赋值 LambdaQuery
@@ -102,6 +103,26 @@ public class User {
 
 ### 多租户
 
+> 开发中...
+
 ### 逻辑删除
 
+> 开发中...
+
 ### 代码生成器
+
+> 测试用例（推荐）
+
+```java
+public class CodeGenTests {
+
+    @Test
+    public void execute() {
+        CodeGenerator.create("192.168.13.213", 3336, "root", "1234.abcd")
+                .globalConfig(new GlobalConfig().author("test"))
+                .packageConfig(new PackageConfig().module("user"))
+                .tableConfig(new TableConfig().schema("mybatis-assistant").nameList("sys_user"))
+                .execute();
+    }
+}
+```

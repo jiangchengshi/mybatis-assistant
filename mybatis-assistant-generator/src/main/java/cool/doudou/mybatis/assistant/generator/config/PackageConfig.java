@@ -10,7 +10,7 @@ public class PackageConfig {
     /**
      * 父级包名
      */
-    private final String parent = "cool.doudou";
+    public String parent = "cool.doudou";
     /**
      * 模块名，默认为""
      */
@@ -54,6 +54,11 @@ public class PackageConfig {
 
     public String getEntity() {
         return entity;
+    }
+
+    public PackageConfig parent(String parent) {
+        this.parent = parent;
+        return this;
     }
 
     public PackageConfig module(String module) {
