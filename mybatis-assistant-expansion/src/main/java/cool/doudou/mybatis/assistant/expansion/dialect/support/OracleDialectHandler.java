@@ -1,7 +1,6 @@
-package cool.doudou.mybatis.assistant.core.dialect.support;
+package cool.doudou.mybatis.assistant.expansion.dialect.support;
 
-import cool.doudou.mybatis.assistant.core.dialect.IDialectHandler;
-import cool.doudou.mybatis.assistant.core.page.Page;
+import cool.doudou.mybatis.assistant.expansion.dialect.IDialectHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 
@@ -20,7 +19,12 @@ public class OracleDialectHandler implements IDialectHandler {
     }
 
     @Override
-    public BoundSql getPageSql(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql, Map<String, Object> additionalParameterMap, Page page) {
+    public BoundSql getPageSql(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql, Map<String, Object> additionalParameterMap, int pageNum, int pageSize) {
+        return null;
+    }
+
+    @Override
+    public String getDriverClassName() {
         return null;
     }
 

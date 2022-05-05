@@ -1,6 +1,6 @@
 package cool.doudou.mybatis.assistant.core;
 
-import cool.doudou.mybatis.assistant.core.dialect.DialectHandlerFactory;
+import cool.doudou.mybatis.assistant.expansion.dialect.DialectHandlerFactory;
 import cool.doudou.mybatis.assistant.core.interceptors.FieldFillInterceptor;
 import cool.doudou.mybatis.assistant.core.interceptors.QueryInterceptor;
 import cool.doudou.mybatis.assistant.core.page.PageDTO;

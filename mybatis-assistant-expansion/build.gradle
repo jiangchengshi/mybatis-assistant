@@ -1,1 +1,5 @@
 description("扩展包")
+
+dependencies {
+    implementation("org.mybatis:mybatis:3.5.9")
+}

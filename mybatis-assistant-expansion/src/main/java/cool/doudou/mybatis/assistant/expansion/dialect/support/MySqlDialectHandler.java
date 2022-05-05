@@ -1,7 +1,6 @@
-package cool.doudou.mybatis.assistant.core.dialect.support;
+package cool.doudou.mybatis.assistant.expansion.dialect.support;
 
-import cool.doudou.mybatis.assistant.core.dialect.IDialectHandler;
-import cool.doudou.mybatis.assistant.core.page.Page;
+import cool.doudou.mybatis.assistant.expansion.dialect.IDialectHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 
@@ -31,12 +30,11 @@ public class MySqlDialectHandler implements IDialectHandler {
     }
 
     @Override
-    public BoundSql getPageSql(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql, Map<String, Object> additionalParameterMap, Page page) {
+    public BoundSql getPageSql(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql, Map<String, Object> additionalParameterMap, int pageNum, int pageSize) {
         // offset，count
-        int offset = (page.getPageNum() - 1) * page.getPageSize();
-        int count = page.getPageSize();
+        int offset = (pageNum - 1) * pageSize;
 
-        String pageSql = "SELECT * FROM (" + boundSql.getSql() + " LIMIT " + offset + "," + count + ") TMP";
+        String pageSql = "SELECT * FROM (" + boundSql.getSql() + " LIMIT " + offset + "," + pageSize + ") TMP";
         BoundSql pageBoundSql = new BoundSql(mappedStatement.getConfiguration(), pageSql, boundSql.getParameterMappings(), parameterObject);
 
         // 参数
@@ -45,6 +43,11 @@ public class MySqlDialectHandler implements IDialectHandler {
             pageBoundSql.setAdditionalParameter(key, additionalParameterMap.get(key));
         }
         return pageBoundSql;
+    }
+
+    @Override
+    public String getDriverClassName() {
+        return "com.mysql.cj.jdbc.Driver";
     }
 
     @Override

@@ -1,15 +1,15 @@
 package cool.doudou.mybatis.assistant.generator;
 
-import cool.doudou.mybatis.assistant.core.dialect.DialectHandlerFactory;
-import cool.doudou.mybatis.assistant.core.dialect.IDialectHandler;
+import cool.doudou.mybatis.assistant.expansion.dialect.DialectHandlerFactory;
+import cool.doudou.mybatis.assistant.expansion.dialect.IDialectHandler;
 import cool.doudou.mybatis.assistant.expansion.util.ComUtil;
 import cool.doudou.mybatis.assistant.generator.config.DataSourceConfig;
 import cool.doudou.mybatis.assistant.generator.config.GlobalConfig;
 import cool.doudou.mybatis.assistant.generator.config.PackageConfig;
 import cool.doudou.mybatis.assistant.generator.config.TableConfig;
-import cool.doudou.mybatis.assistant.generator.entity.DbColumn;
 import cool.doudou.mybatis.assistant.generator.entity.ClassField;
 import cool.doudou.mybatis.assistant.generator.entity.ClassInstance;
+import cool.doudou.mybatis.assistant.generator.entity.DbColumn;
 import cool.doudou.mybatis.assistant.generator.entity.DbTable;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -17,6 +17,7 @@ import org.apache.velocity.app.Velocity;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -83,13 +84,15 @@ public class CodeGenerator {
             return;
         }
 
+        // 驱动类名
+        final String driverClassName = dialectHandler.getDriverClassName();
         // 表信息SQL
         final String tableSql = dialectHandler.getTableSql();
         // 字段信息SQL
         final String columnSql = dialectHandler.getColumnSql();
 
         this.tableConfig.getNameList().forEach(tableName -> {
-            DbTable dbTable = tableAndColumn(tableName, tableSql, columnSql);
+            DbTable dbTable = getTableInfo(driverClassName, tableName, tableSql, columnSql);
             if (dbTable != null) {
                 output(dbTable);
             }
@@ -97,19 +100,20 @@ public class CodeGenerator {
     }
 
     /**
-     * 数据表&字段
+     * 数据表信息
      *
+     * @param driverClassName
      * @param tableName
      * @param tableSql
      * @param columnSql
      * @return
      */
-    private DbTable tableAndColumn(String tableName, String tableSql, String columnSql) {
+    private DbTable getTableInfo(String driverClassName, String tableName, String tableSql, String columnSql) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(driverClassName);
             connection = DriverManager.getConnection(this.dataSourceConfig.getUrl(), this.dataSourceConfig.getUser(), this.dataSourceConfig.getPassword());
 
             DbTable dbTable;
@@ -182,7 +186,7 @@ public class CodeGenerator {
             try {
                 String directory = parentFile.getAbsolutePath();
                 FileWriter writer = new FileWriter(directory + File.separator + fileName);
-                Template template = Velocity.getTemplate(templateName, "UTF-8");
+                Template template = Velocity.getTemplate(templateName, StandardCharsets.UTF_8.name());
                 template.merge(new VelocityContext(contextMap), writer);
                 writer.flush();
                 writer.close();
@@ -219,15 +223,13 @@ public class CodeGenerator {
      * @return
      */
     private Map<String, Object> contextMap(DbTable dbTable) {
-        String tableName = dbTable.getName();
-
         Map<String, Object> contextMap = new HashMap<>(8);
-        contextMap.put("tableName", tableName);
+        contextMap.put("tableName", dbTable.getName());
         contextMap.put("tableComment", dbTable.getComment());
         contextMap.put("author", this.globalConfig.getAuthor());
         contextMap.put("date", new SimpleDateFormat("yyyy/MM/dd").format(new Date()));
         contextMap.put("package", this.packageConfig);
-        contextMap.put("instance", instance(tableName));
+        contextMap.put("instance", instance(dbTable.getName()));
         contextMap.put("entityMap", entityMap(dbTable.getColumnList()));
         return contextMap;
     }

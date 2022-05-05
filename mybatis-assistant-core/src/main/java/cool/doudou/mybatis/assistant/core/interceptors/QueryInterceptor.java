@@ -1,8 +1,8 @@
 package cool.doudou.mybatis.assistant.core.interceptors;
 
-import cool.doudou.mybatis.assistant.core.dialect.IDialectHandler;
 import cool.doudou.mybatis.assistant.core.helper.PageHelper;
 import cool.doudou.mybatis.assistant.core.page.Page;
+import cool.doudou.mybatis.assistant.expansion.dialect.IDialectHandler;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -66,7 +66,7 @@ public class QueryInterceptor implements Interceptor {
                     return Collections.emptyList();
                 }
                 // 分页 SQL
-                boundSql = dialectHandler.getPageSql(mappedStatement, parameterObject, boundSql, additionalParameterMap, page);
+                boundSql = dialectHandler.getPageSql(mappedStatement, parameterObject, boundSql, additionalParameterMap, page.getPageNum(), page.getPageSize());
             }
         }
 

@@ -1,6 +1,5 @@
-package cool.doudou.mybatis.assistant.core.dialect;
+package cool.doudou.mybatis.assistant.expansion.dialect;
 
-import cool.doudou.mybatis.assistant.core.page.Page;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 
@@ -31,10 +30,18 @@ public interface IDialectHandler {
      * @param parameterObject        param
      * @param boundSql               sql
      * @param additionalParameterMap additionalParam
-     * @param page                   page
+     * @param pageNum                当前页码
+     * @param pageSize               每页条数
      * @return BoundSql
      */
-    BoundSql getPageSql(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql, Map<String, Object> additionalParameterMap, Page page);
+    BoundSql getPageSql(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql, Map<String, Object> additionalParameterMap, int pageNum, int pageSize);
+
+    /**
+     * 驱动类名
+     *
+     * @return String
+     */
+    String getDriverClassName();
 
     /**
      * 数据表SQL

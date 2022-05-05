@@ -1,5 +1,6 @@
 package cool.doudou.mybatis.assistant.boot.starter.interceptor;
 
+import cool.doudou.mybatis.assistant.boot.starter.Constant;
 import cool.doudou.mybatis.assistant.core.interceptors.DesensitizeInterceptor;
 import cool.doudou.mybatis.assistant.core.interceptors.FieldFillInterceptor;
 import cool.doudou.mybatis.assistant.core.interceptors.QueryInterceptor;
@@ -19,11 +20,11 @@ public class InterceptorFactory {
 
     static {
         // 分页
-        INTERCEPTOR_MAP.put("query", new QueryInterceptor());
+        INTERCEPTOR_MAP.put(Constant.InterceptorName.QUERY, new QueryInterceptor());
         // 字段填充
-        INTERCEPTOR_MAP.put("filedFill", new FieldFillInterceptor());
+        INTERCEPTOR_MAP.put(Constant.InterceptorName.FIELD_FILL, new FieldFillInterceptor());
         // 脱敏
-        INTERCEPTOR_MAP.put("desensitize", new DesensitizeInterceptor());
+        INTERCEPTOR_MAP.put(Constant.InterceptorName.DESENSITIZE, new DesensitizeInterceptor());
     }
 
     public static Interceptor getInstance(String name) {

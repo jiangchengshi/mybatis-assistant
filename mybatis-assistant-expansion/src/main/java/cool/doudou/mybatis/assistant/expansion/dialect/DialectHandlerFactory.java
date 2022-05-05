@@ -1,9 +1,9 @@
-package cool.doudou.mybatis.assistant.core.dialect;
+package cool.doudou.mybatis.assistant.expansion.dialect;
 
-import cool.doudou.mybatis.assistant.core.dialect.support.MySqlDialectHandler;
-import cool.doudou.mybatis.assistant.core.dialect.support.OracleDialectHandler;
-import cool.doudou.mybatis.assistant.core.dialect.support.PostgresSqlDialectHandler;
-import cool.doudou.mybatis.assistant.core.dialect.support.SqlServerDialectHandler;
+import cool.doudou.mybatis.assistant.expansion.dialect.support.MySqlDialectHandler;
+import cool.doudou.mybatis.assistant.expansion.dialect.support.OracleDialectHandler;
+import cool.doudou.mybatis.assistant.expansion.dialect.support.PostgresSqlDialectHandler;
+import cool.doudou.mybatis.assistant.expansion.dialect.support.SqlServerDialectHandler;
 
 import java.util.HashMap;
 import java.util.Map;

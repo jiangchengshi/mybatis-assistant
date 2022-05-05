@@ -1,11 +1,11 @@
 package cool.doudou.mybatis.assistant.boot.starter.config;
 
+import cool.doudou.mybatis.assistant.boot.starter.Constant;
 import cool.doudou.mybatis.assistant.boot.starter.interceptor.InterceptorFactory;
 import cool.doudou.mybatis.assistant.boot.starter.properties.MybatisAssistantProperties;
-import cool.doudou.mybatis.assistant.core.dialect.DialectHandlerFactory;
-import cool.doudou.mybatis.assistant.core.dialect.IDialectHandler;
+import cool.doudou.mybatis.assistant.expansion.dialect.DialectHandlerFactory;
+import cool.doudou.mybatis.assistant.expansion.dialect.IDialectHandler;
 import cool.doudou.mybatis.assistant.core.fill.IFieldFillHandler;
-import cool.doudou.mybatis.assistant.core.interceptors.FieldFillInterceptor;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -52,27 +52,36 @@ public class MybatisAssistantConfig {
         // 查询插件
         IDialectHandler dialectHandler = DialectHandlerFactory.getInstance(jdbcUrl);
         if (dialectHandler != null) {
-            Interceptor interceptor = InterceptorFactory.getInstance("query");
+            Interceptor interceptor = InterceptorFactory.getInstance(Constant.InterceptorName.QUERY);
+            if (interceptor != null) {
+                Properties properties = new Properties();
+                properties.put("dialectHandler", dialectHandler);
+                interceptor.setProperties(properties);
+                sqlSessionFactory.getConfiguration().addInterceptor(interceptor);
 
-            Properties properties = new Properties();
-            properties.put("dialectHandler", dialectHandler);
-            interceptor.setProperties(properties);
-
-            sqlSessionFactory.getConfiguration().addInterceptor(interceptor);
+                System.out.println("interceptor[" + Constant.InterceptorName.QUERY + "] add ok.");
+            }
         }
 
         // 其他插件：按配置注入
         mybatisAssistantProperties.getInterceptors().forEach(key -> {
             Interceptor interceptor = InterceptorFactory.getInstance(key);
+            if (interceptor != null) {
+                // 字段填充插件
+                if (Constant.InterceptorName.FIELD_FILL.equals(key)) {
+                    if (this.fieldFillHandler != null) {
+                        Properties properties = new Properties();
+                        properties.put("fieldFillHandler", fieldFillHandler);
+                        interceptor.setProperties(properties);
 
-            // 字段填充插件
-            if (interceptor instanceof FieldFillInterceptor) {
-                if (this.fieldFillHandler != null) {
-                    Properties properties = new Properties();
-                    properties.put("fieldFillHandler", fieldFillHandler);
-                    interceptor.setProperties(properties);
+                        sqlSessionFactory.getConfiguration().addInterceptor(interceptor);
 
+                        System.out.println("interceptor[" + key + "] add ok.");
+                    }
+                } else {
                     sqlSessionFactory.getConfiguration().addInterceptor(interceptor);
+
+                    System.out.println("interceptor[" + key + "] add ok.");
                 }
             }
         });
