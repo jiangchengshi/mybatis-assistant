@@ -1,12 +1,12 @@
 ## Mybatis Assistant（Mybatis助手）
 
-1. 引入数据库驱动包
+1. 引入数据库驱动包（以MySql为里）
 
 ```kotlin
 implementation("mysql:mysql-connector-java:latest")
 ```
 
-2. 配置数据源属性
+2. 配置数据源属性（以MySql为里）
 
 ```properties
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
@@ -32,11 +32,13 @@ spring:
 implementation("cool.doudou:mybatis-assistant-boot-starter:latest")
 ```
 
+> Latest Version: [![Maven Central](https://img.shields.io/badge/Maven-v1.0.1-blue)](https://search.maven.org/search?q=g:cool.doudou%20a:mybatis-assistant-*)  
+
 4. 配置mybatis-assistant属性
 
 ```properties
 mybatis.assistant.mapper-locations=classpath*:mapper/*Mapper.xml
-mybatis.assistant.interceptors=fieldFill,tenantFill,desensitize,log
+mybatis.assistant.interceptors=fieldFill,tenantFill,desensitize
 ```
 
 或者
@@ -49,7 +51,6 @@ mybatis:
       - fieldFill
       - tenantFill
       - desensitize
-      - log
 ```
 
 ### 查询（默认启用）

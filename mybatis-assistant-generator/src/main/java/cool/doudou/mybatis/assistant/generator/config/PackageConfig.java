@@ -1,5 +1,7 @@
 package cool.doudou.mybatis.assistant.generator.config;
 
+import cool.doudou.mybatis.assistant.generator.Constant;
+
 /**
  * PackageConfig
  *
@@ -64,5 +66,17 @@ public class PackageConfig {
     public PackageConfig module(String module) {
         this.module = module;
         return this;
+    }
+
+    public String getPath(String fileName) {
+        if (fileName.endsWith(Constant.CONTROLLER + ".java")) {
+            return this.controller;
+        } else if (fileName.endsWith(Constant.SERVICE + ".java")) {
+            return this.service;
+        } else if (fileName.endsWith(Constant.MAPPER + ".java") || fileName.endsWith(Constant.MAPPER + ".xml")) {
+            return this.mapper;
+        } else {
+            return this.entity;
+        }
     }
 }

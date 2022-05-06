@@ -178,7 +178,7 @@ public class CodeGenerator {
         for (Map.Entry<String, String> entry : templateMap.entrySet()) {
             String templateName = entry.getKey();
             String fileName = entry.getValue();
-            File parentFile = new File(this.globalConfig.getOutputDir());
+            File parentFile = new File(this.globalConfig.getOutputDir() + File.separator + this.packageConfig.getPath(fileName));
             if (!parentFile.exists()) {
                 parentFile.mkdirs();
             }

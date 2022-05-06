@@ -1,5 +1,6 @@
 package ${package.parent}#if($package.module!='').${package.module}#end.${package.entity};
 
+import cool.doudou.mybatis.assistant.core.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
