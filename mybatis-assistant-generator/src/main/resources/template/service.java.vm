@@ -1,4 +1,4 @@
-package ${package.parent}#if($package.module!='').${package.module}#end.${package.serviceImpl};
+package ${package.parent}#if($package.module!='').${package.module}#end.${package.service};
 
 import cool.doudou.mybatis.assistant.core.service.BaseService;
 import org.springframework.stereotype.Service;

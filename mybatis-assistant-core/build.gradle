@@ -6,6 +6,8 @@ dependencies {
     api("org.mybatis:mybatis:3.5.9")
     api("org.mybatis:mybatis-spring:2.0.7")
 
+    compileOnly("org.springframework:spring-beans:5.3.18")
+
     testImplementation("mysql:mysql-connector-java:8.0.28")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }

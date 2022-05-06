@@ -13,12 +13,15 @@ import java.time.LocalDateTime;
  */
 public class BaseEntity {
     private Long id;
+    @FieldFill(fill = CommandTypeEnum.INSERT)
     private Long createBy;
     @FieldFill(fill = CommandTypeEnum.INSERT)
     private LocalDateTime createTime;
+    @FieldFill(fill = CommandTypeEnum.UPDATE)
     private Long updateBy;
     @FieldFill(fill = CommandTypeEnum.UPDATE)
     private LocalDateTime updateTime;
+    private Integer deleted;
 
     public Long getId() {
         return id;
@@ -60,6 +63,14 @@ public class BaseEntity {
         this.updateTime = updateTime;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public String toString() {
         return "BaseEntity{" +
@@ -68,6 +79,7 @@ public class BaseEntity {
                 ", createTime=" + createTime +
                 ", updateBy=" + updateBy +
                 ", updateTime=" + updateTime +
+                ", deleted=" + deleted +
                 '}';
     }
 }

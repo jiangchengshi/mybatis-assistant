@@ -1,9 +1,10 @@
 package cool.doudou.mybatis.assistant.core.service;
 
 import cool.doudou.mybatis.assistant.core.mapper.BaseMapper;
-import cool.doudou.mybatis.assistant.core.page.PageDTO;
+import cool.doudou.mybatis.assistant.core.page.Page;
 import cool.doudou.mybatis.assistant.core.page.PageInfo;
 import cool.doudou.mybatis.assistant.core.query.LambdaQuery;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * BaseService
@@ -12,60 +13,58 @@ import cool.doudou.mybatis.assistant.core.query.LambdaQuery;
  * @since 2022/5/6
  */
 public class BaseService<M extends BaseMapper<T>, T> {
-    private final M mapper;
-
-    public BaseService(M mapper) {
-        this.mapper = mapper;
-    }
+    @Autowired
+    private M baseMapper;
 
     /**
      * 分页查询
      *
-     * @param pageDTO
-     * @return PageInfo<T>
+     * @param page 分页参数
+     * @param t    实体参数
+     * @return PageInfo
      */
-    public PageInfo<T> page(PageDTO<T> pageDTO) {
+    public PageInfo<T> page(Page page, T t) {
         LambdaQuery<T> lambdaQuery = new LambdaQuery<>();
-        return PageInfo.of(mapper.selectList(pageDTO.page(), lambdaQuery));
+        return PageInfo.of(baseMapper.selectList(page, lambdaQuery));
     }
 
     /**
      * 根据 id 查询记录
      *
-     * @param id
+     * @param id 记录Id
      * @return T
      */
     public T get(Long id) {
-        return mapper.selectById(id);
+        return baseMapper.selectById(id);
     }
 
     /**
      * 添加记录
      *
-     * @param t
+     * @param t 实体参数
      * @return int
      */
     public int add(T t) {
-        return mapper.insert(t);
+        return baseMapper.insert(t);
     }
 
     /**
      * 修改记录
      *
-     * @param t
+     * @param t 实体参数
      * @return int
      */
     public int modify(T t) {
-        return mapper.update(t);
+        return baseMapper.update(t);
     }
 
     /**
      * 根据 ids 删除记录
      *
-     * @param ids
+     * @param ids 记录Ids
      * @return int
      */
     public int delete(String ids) {
-        return mapper.deleteByIds(ids);
+        return baseMapper.deleteByIds(ids);
     }
 }
