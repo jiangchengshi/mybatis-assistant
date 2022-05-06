@@ -1,7 +1,8 @@
 package ${package.parent}#if($package.module!='').${package.module}#end.${package.service};
 
+import cool.doudou.mybatis.assistant.core.service.BaseService;
 import org.springframework.stereotype.Service;
-import lombok.AllArgsConstructor;
+import ${package.parent}#if($package.module!='').${package.module}#end.${package.mapper}.${instance.mapperClass};
 import ${package.parent}#if($package.module!='').${package.module}#end.${package.entity}.${instance.entityClass};
 
 /**
@@ -10,59 +11,6 @@ import ${package.parent}#if($package.module!='').${package.module}#end.${package
  * @author ${author}
  * @since ${date}
  */
-@AllArgsConstructor
 @Service
-public class ${instance.serviceClass} {
-    private ${instance.mapperClass} ${instance.mapper};
-
-    /**
-     * 分页查询
-     *
-     * @param page
-     * @param ${instance.entity}
-     * @return PageInfo<${instance.entityClass}>
-     */
-    public PageInfo<${instance.entityClass}> page(Page page, ${instance.entityClass} ${instance.entity}){
-        return PageInfo.of(${instance.mapper}.selectPage(page, ${instance.entity}));
-    }
-
-    /**
-     * 根据 id 查询记录
-     *
-     * @param id
-     * @return ${instance.entityClass}
-     */
-    public ${instance.entityClass} get(Long id) {
-        return ${instance.mapper}.selectById(id);
-    }
-
-    /**
-     * 添加记录
-     *
-     * @param ${instance.entity}
-     * @return int
-     */
-    public int add(${instance.entityClass} ${instance.entity}) {
-        return ${instance.mapper}.insert(${instance.entity});
-    }
-
-    /**
-     * 修改记录
-     *
-     * @param ${instance.entity}
-     * @return int
-     */
-    public int modify(${instance.entityClass} ${instance.entity}) {
-        return ${instance.mapper}.update(${instance.entity});
-    }
-
-    /**
-     * 根据 ids 删除记录
-     *
-     * @param ids
-     * @return int
-     */
-    public int delete(String ids) {
-        return ${instance.mapper}.deleteByIds(ids);
-    }
+public class ${instance.serviceClass} extends BaseService<${instance.mapperClass}, ${instance.entityClass}> {
 }

@@ -15,9 +15,10 @@ public class CodeGeneratorTest {
     @Test
     public void execute() {
         CodeGenerator.create("192.168.13.213", 3336, "root", "1234.abcd")
-                .globalConfig(new GlobalConfig().author("test"))
-                .packageConfig(new PackageConfig().module("user"))
-                .tableConfig(new TableConfig().schema("mybatis-assistant").nameList("sys_user"))
+                .globalConfig(new GlobalConfig().author("jiangcs"))
+                .packageConfig(new PackageConfig().parent("cool.doudou.celery.upms"))
+                .tableConfig(new TableConfig().schema("celery-upms")
+                        .nameList("sys_role"))
                 .execute();
     }
 }

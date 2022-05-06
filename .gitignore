@@ -39,3 +39,5 @@ out/
 /logs
 
 gradle.properties
+
+.DS_Store

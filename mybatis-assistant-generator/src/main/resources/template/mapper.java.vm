@@ -1,5 +1,6 @@
 package ${package.parent}#if($package.module!='').${package.module}#end.${package.mapper};
 
+import cool.doudou.mybatis.assistant.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import ${package.parent}#if($package.module!='').${package.module}#end.${package.entity}.${instance.entityClass};
 
