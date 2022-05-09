@@ -37,7 +37,6 @@ out/
 .vscode/
 
 /logs
-
 gradle.properties
-
 .DS_Store
+/gradle-publish/
