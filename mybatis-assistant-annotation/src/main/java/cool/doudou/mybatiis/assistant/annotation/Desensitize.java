@@ -1,7 +1,5 @@
 package cool.doudou.mybatiis.assistant.annotation;
 
-import cool.doudou.mybatiis.assistant.annotation.enums.StrategyEnum;
-
 import java.lang.annotation.*;
 
 /**
@@ -14,5 +12,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Desensitize {
-    StrategyEnum strategy();
+    String strategy();
 }

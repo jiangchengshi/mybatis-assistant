@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${package.parent}#if($package.module!='').${package.module}#end.${package.mapper}.${instance.mapperClass}">
+    <select id="selectById" resultType="${package.parent}#if($package.module!='').${package.module}#end.${package.entity}.${instance.entityClass}">
+        SELECT #foreach($column in ${entityMap.columnList})#if($foreach.index>=1),#end$tableName.${column.name} AS ${entityMap.fieldList[$foreach.index].name}#end
+        FROM $tableName $tableName
+        WHERE $tableName.id = #{id}
+    </select>
     <select id="selectList" resultType="${package.parent}#if($package.module!='').${package.module}#end.${package.entity}.${instance.entityClass}">
         SELECT #foreach($column in ${entityMap.columnList})#if($foreach.index>=1),#end$tableName.${column.name} AS ${entityMap.fieldList[$foreach.index].name}#end
         FROM $tableName $tableName
@@ -10,11 +15,6 @@
         <if test="orderBy!=null">
             ORDER BY #{orderBy}
         </if>
-    </select>
-    <select id="selectById" resultType="${package.parent}#if($package.module!='').${package.module}#end.${package.entity}.${instance.entityClass}">
-        SELECT #foreach($column in ${entityMap.columnList})#if($foreach.index>=1),#end$tableName.${column.name} AS ${entityMap.fieldList[$foreach.index].name}#end
-        FROM $tableName $tableName
-        WHERE $tableName.id = #{id}
     </select>
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO $tableName
@@ -28,7 +28,8 @@
         WHERE id = #{id}
     </update>
     <delete id="deleteByIds">
-        DELETE FROM $tableName
+        UPDATE $tableName
+        SET deleted=-1
         WHERE FIND_IN_SET(id, #{ids})
     </delete>
 </mapper>

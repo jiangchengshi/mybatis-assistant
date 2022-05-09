@@ -14,21 +14,21 @@ import java.util.List;
  */
 public interface BaseMapper<T> {
     /**
-     * 分页查询
-     *
-     * @param page        分页参数
-     * @param lambdaQuery 查询参数
-     * @return PageInfo
-     */
-    List<T> selectList(@Param("pg") Page page, @Param("q") LambdaQuery<T> lambdaQuery);
-
-    /**
      * 根据 id 查询记录
      *
      * @param id 主键ID
-     * @return Entity
+     * @return 实体记录
      */
     T selectById(Long id);
+
+    /**
+     * 查询列表
+     *
+     * @param page        分页参数
+     * @param lambdaQuery 查询参数
+     * @return 实体记录集合
+     */
+    List<T> selectList(@Param("pg") Page page, @Param("q") LambdaQuery<T> lambdaQuery);
 
     /**
      * 新增

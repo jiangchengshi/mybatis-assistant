@@ -14,9 +14,5 @@ public enum CommandTypeEnum {
     /**
      * 更新
      */
-    UPDATE,
-    /**
-     * 插入和更新
-     */
-    ALL
+    UPDATE
 }

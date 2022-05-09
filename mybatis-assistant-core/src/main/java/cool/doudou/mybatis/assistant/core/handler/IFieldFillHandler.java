@@ -1,4 +1,4 @@
-package cool.doudou.mybatis.assistant.core.fill;
+package cool.doudou.mybatis.assistant.core.handler;
 
 import org.apache.ibatis.reflection.MetaObject;
 
@@ -24,15 +24,18 @@ public interface IFieldFillHandler {
     void update(MetaObject metaObject);
 
     /**
-     * 根据 name 填充 value
+     * 不需要实现重写
      *
-     * @param metaObject metaObject
+     * @param metaObject 入参对象
      * @param name       属性名
      * @param value      属性值
      */
     default void fill(MetaObject metaObject, String name, Object value) {
         if (metaObject.hasSetter(name)) {
-            metaObject.setValue(name, value);
+            Object valueExists = metaObject.getValue(name);
+            if (valueExists == null) {
+                metaObject.setValue(name, value);
+            }
         }
     }
 }

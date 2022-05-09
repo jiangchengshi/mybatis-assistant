@@ -70,6 +70,10 @@ public interface IQuery<Child, R> {
 
     Child having(R column, String opr, Object value);
 
+    Child tenant(R column, Object tenantId);
+
+    Child deleted();
+
     default void where(String column, SqlKeyword sqlKeyword, Object value) {
         String propertyName = ComUtil.underline2Hump(column);
         whereList.add(Constant.BRACKETS_LEFT + String.join(Constant.SPACE, column, sqlKeyword.get(), Constant.PARAM_BRACES_LEFT + Constant.QUERY.paramName + Constant.DOT + Constant.QUERY.paramPrefix + Constant.DOT + propertyName + Constant.PARAM_BRACES_RIGHT) + Constant.BRACKETS_RIGHT);

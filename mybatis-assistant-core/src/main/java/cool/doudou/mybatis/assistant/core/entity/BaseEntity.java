@@ -1,8 +1,5 @@
 package cool.doudou.mybatis.assistant.core.entity;
 
-import cool.doudou.mybatiis.assistant.annotation.FieldFill;
-import cool.doudou.mybatiis.assistant.annotation.enums.CommandTypeEnum;
-
 import java.time.LocalDateTime;
 
 /**
@@ -12,15 +9,33 @@ import java.time.LocalDateTime;
  * @since 2022/4/4
  */
 public class BaseEntity {
+    /**
+     * 记录ID
+     */
     private Long id;
-    @FieldFill(fill = CommandTypeEnum.INSERT)
+    /**
+     * 租户ID
+     */
+    private Long tenantId;
+    /**
+     * 创建人
+     */
     private Long createBy;
-    @FieldFill(fill = CommandTypeEnum.INSERT)
+    /**
+     * 创建时间
+     */
     private LocalDateTime createTime;
-    @FieldFill(fill = CommandTypeEnum.UPDATE)
+    /**
+     * 修改人
+     */
     private Long updateBy;
-    @FieldFill(fill = CommandTypeEnum.UPDATE)
+    /**
+     * 修改时间
+     */
     private LocalDateTime updateTime;
+    /**
+     * 逻辑删除：0 正常，-1 删除
+     */
     private Integer deleted;
 
     public Long getId() {
@@ -29,6 +44,14 @@ public class BaseEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(Long tenantId) {
+        this.tenantId = tenantId;
     }
 
     public Long getCreateBy() {

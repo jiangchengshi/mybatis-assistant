@@ -32,13 +32,14 @@ spring:
 implementation("cool.doudou:mybatis-assistant-boot-starter:latest")
 ```
 
-> Latest Version: [![Maven Central](https://img.shields.io/badge/Maven-v1.0.1-blue)](https://search.maven.org/search?q=g:cool.doudou%20a:mybatis-assistant-*)  
+> Latest
+>
+Version: [![Maven Central](https://img.shields.io/badge/Maven-v1.0.2-blue)](https://search.maven.org/search?q=g:cool.doudou%20a:mybatis-assistant-*)
 
 4. 配置mybatis-assistant属性
 
 ```properties
 mybatis.assistant.mapper-locations=classpath*:mapper/*Mapper.xml
-mybatis.assistant.interceptors=fieldFill,tenantFill,desensitize
 ```
 
 或者
@@ -47,13 +48,9 @@ mybatis.assistant.interceptors=fieldFill,tenantFill,desensitize
 mybatis:
   assistant:
     mapper-locations: classpath*:mapper/*Mapper.xml
-    interceptors:
-      - fieldFill
-      - tenantFill
-      - desensitize
 ```
 
-### 查询（默认启用）
+### 查询
 
 > 测试用例（推荐）：分页参数PageDTO实体中赋值pageNum、pageSize即可
 
@@ -91,24 +88,49 @@ public class MyFieldFillHandler implements IFieldFillHandler {
 }
 ```
 
+### 逻辑删除
+
+> 测试用例（推荐）：实现IDeletedHandler，完成插入、修改时逻辑删除字段填充
+
+```java
+public class MyDeletedHandler implements IDeletedHandler {
+}
+```
+
+> 逻辑值：
+
+- 0：正常
+- -1：删除
+
+### 多租户填充
+
+> 测试用例（推荐）：实现ITenantFillHandler，完成插入时字段值填充
+
+```java
+public class MyTenantFillHandler implements ITenantFillHandler {
+    @Override
+    public Long getTenantId() {
+        return 0L;
+    }
+}
+```
+
 ### 脱敏
 
-> 测试用例（推荐）：实体字段添加注解@Desensitize，指定策略
+> 测试用例（推荐）：实现IDesensitizeHandler，实体字段添加注解@Desensitize指定策略，完成数据返回时字段脱敏
 
 ```java
 public class User {
-    @Desensitize(strategy = StrategyEnum.USER_NAME)
+    @Desensitize(strategy = "userName")
     private String name;
 }
 ```
 
-### 多租户
+> 默认策略：
 
-> 开发中...
-
-### 逻辑删除
-
-> 开发中...
+- 用户名：userName => 用户名前一后一
+- 身份证：idCard => 身份证前三后四
+- 移动电话：phoneNumber => 手机号码前三后四
 
 ### 代码生成器
 
@@ -116,7 +138,6 @@ public class User {
 
 ```java
 public class CodeGenTests {
-
     @Test
     public void execute() {
         CodeGenerator.create("192.168.13.213", 3336, "root", "1234.abcd")
