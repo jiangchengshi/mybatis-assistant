@@ -9,7 +9,7 @@ package cool.doudou.mybatis.assistant.boot.starter;
 public class Constant {
     public interface InterceptorName {
         String QUERY = "query";
-        String FIELD_FILL = "fieldFill";
+        String FILL = "fill";
         String DESENSITIZE = "desensitize";
     }
 }
