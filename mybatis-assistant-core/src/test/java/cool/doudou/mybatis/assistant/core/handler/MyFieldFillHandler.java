@@ -1,6 +1,5 @@
 package cool.doudou.mybatis.assistant.core.handler;
 
-import cool.doudou.mybatis.assistant.core.fill.IFieldFillHandler;
 import org.apache.ibatis.reflection.MetaObject;
 
 import java.time.LocalDateTime;

@@ -114,4 +114,16 @@ public class Query implements IQuery<Query, String> {
         havingSet.add(String.join(Constant.SPACE, column, opr, String.valueOf(value)));
         return this;
     }
+
+    @Override
+    public Query tenant(String column, Object tenantId) {
+        this.where(column, SqlKeyword.EQ, tenantId);
+        return this;
+    }
+
+    @Override
+    public Query deleted() {
+        this.where("deleted", SqlKeyword.EQ, 0);
+        return this;
+    }
 }

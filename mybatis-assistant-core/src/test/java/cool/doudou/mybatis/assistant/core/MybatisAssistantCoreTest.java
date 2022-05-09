@@ -1,15 +1,17 @@
 package cool.doudou.mybatis.assistant.core;
 
-import cool.doudou.mybatis.assistant.expansion.dialect.DialectHandlerFactory;
-import cool.doudou.mybatis.assistant.core.interceptors.FieldFillInterceptor;
+import cool.doudou.mybatis.assistant.core.entity.User;
+import cool.doudou.mybatis.assistant.core.handler.MyDeletedFillHandler;
+import cool.doudou.mybatis.assistant.core.handler.MyFieldFillHandler;
+import cool.doudou.mybatis.assistant.core.handler.MyTenantFillHandler;
+import cool.doudou.mybatis.assistant.core.helper.MybatisConfigHelper;
+import cool.doudou.mybatis.assistant.core.interceptors.FillInterceptor;
 import cool.doudou.mybatis.assistant.core.interceptors.QueryInterceptor;
+import cool.doudou.mybatis.assistant.core.mapper.UserMapper;
 import cool.doudou.mybatis.assistant.core.page.PageDTO;
 import cool.doudou.mybatis.assistant.core.query.LambdaQuery;
 import cool.doudou.mybatis.assistant.core.query.Query;
-import cool.doudou.mybatis.assistant.core.entity.User;
-import cool.doudou.mybatis.assistant.core.handler.MyFieldFillHandler;
-import cool.doudou.mybatis.assistant.core.helper.MybatisConfigHelper;
-import cool.doudou.mybatis.assistant.core.mapper.UserMapper;
+import cool.doudou.mybatis.assistant.expansion.dialect.DialectHandlerFactory;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,7 +32,6 @@ public class MybatisAssistantCoreTest {
         SqlSession sqlSession = null;
 
         try {
-            // IDialectHandler
             Properties properties = new Properties();
             properties.put("dialectHandler", DialectHandlerFactory.getInstance("jdbc:mysql"));
             MybatisConfigHelper.getConfiguration().getInterceptors().forEach((interceptor -> {
@@ -61,7 +62,6 @@ public class MybatisAssistantCoreTest {
         SqlSession sqlSession = null;
 
         try {
-            // IDialectHandler
             Properties properties = new Properties();
             properties.put("dialectHandler", DialectHandlerFactory.getInstance("jdbc:mysql"));
             MybatisConfigHelper.getConfiguration().getInterceptors().forEach((interceptor -> {
@@ -93,11 +93,10 @@ public class MybatisAssistantCoreTest {
         SqlSession sqlSession = null;
 
         try {
-            // IFieldFillHandler
             Properties properties = new Properties();
             properties.put("fieldFillHandler", new MyFieldFillHandler());
             MybatisConfigHelper.getConfiguration().getInterceptors().forEach((interceptor -> {
-                if (interceptor instanceof FieldFillInterceptor) {
+                if (interceptor instanceof FillInterceptor) {
                     interceptor.setProperties(properties);
                 }
             }));
@@ -123,11 +122,10 @@ public class MybatisAssistantCoreTest {
         SqlSession sqlSession = null;
 
         try {
-            // IFieldFillHandler
             Properties properties = new Properties();
             properties.put("fieldFillHandler", new MyFieldFillHandler());
             MybatisConfigHelper.getConfiguration().getInterceptors().forEach((interceptor -> {
-                if (interceptor instanceof FieldFillInterceptor) {
+                if (interceptor instanceof FillInterceptor) {
                     interceptor.setProperties(properties);
                 }
             }));
@@ -143,6 +141,64 @@ public class MybatisAssistantCoreTest {
                 userList.add(user);
             }
             int count = userMapper.batchInsert(userList);
+            Assertions.assertTrue(count > 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            assert sqlSession != null;
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testTenant() {
+        SqlSession sqlSession = null;
+
+        try {
+            Properties properties = new Properties();
+            properties.put("tenantFillHandler", new MyTenantFillHandler());
+            MybatisConfigHelper.getConfiguration().getInterceptors().forEach((interceptor -> {
+                if (interceptor instanceof FillInterceptor) {
+                    interceptor.setProperties(properties);
+                }
+            }));
+
+            sqlSession = MybatisConfigHelper.getSqlSession();
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+            User user = new User();
+            user.setName("testTenant");
+            user.setPy("tt");
+            int count = userMapper.insert(user);
+            Assertions.assertTrue(count > 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            assert sqlSession != null;
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testDeleted() {
+        SqlSession sqlSession = null;
+
+        try {
+            Properties properties = new Properties();
+            properties.put("deletedFillHandler", new MyDeletedFillHandler());
+            MybatisConfigHelper.getConfiguration().getInterceptors().forEach((interceptor -> {
+                if (interceptor instanceof FillInterceptor) {
+                    interceptor.setProperties(properties);
+                }
+            }));
+
+            sqlSession = MybatisConfigHelper.getSqlSession();
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+            User user = new User();
+            user.setName("testDeleted");
+            user.setPy("td");
+            int count = userMapper.insert(user);
             Assertions.assertTrue(count > 0);
         } catch (Exception e) {
             e.printStackTrace();

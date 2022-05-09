@@ -16,7 +16,7 @@
         </plugin>
         <plugin interceptor="cool.doudou.mybatis.assistant.core.interceptors.DesensitizeInterceptor">
         </plugin>
-        <plugin interceptor="cool.doudou.mybatis.assistant.core.interceptors.FieldFillInterceptor">
+        <plugin interceptor="cool.doudou.mybatis.assistant.core.interceptors.FillInterceptor">
         </plugin>
     </plugins>
 

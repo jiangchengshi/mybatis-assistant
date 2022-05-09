@@ -1,8 +1,6 @@
 package cool.doudou.mybatis.assistant.core.entity;
 
 import cool.doudou.mybatiis.assistant.annotation.Desensitize;
-import cool.doudou.mybatiis.assistant.annotation.enums.StrategyEnum;
-import cool.doudou.mybatis.assistant.core.entity.BaseEntity;
 
 /**
  * User
@@ -11,7 +9,7 @@ import cool.doudou.mybatis.assistant.core.entity.BaseEntity;
  * @since 2022/3/31
  */
 public class User extends BaseEntity {
-    @Desensitize(strategy = StrategyEnum.USER_NAME)
+    @Desensitize(strategy = "userName")
     private String name;
     private String py;
 

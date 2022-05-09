@@ -118,4 +118,16 @@ public class LambdaQuery<T> implements IQuery<LambdaQuery<T>, SFunction<T>> {
         havingSet.add(String.join(Constant.SPACE, FunctionGetter.name(column), opr, String.valueOf(value)));
         return this;
     }
+
+    @Override
+    public LambdaQuery<T> tenant(SFunction<T> column, Object tenantId) {
+        this.where(FunctionGetter.name(column), SqlKeyword.EQ, tenantId);
+        return this;
+    }
+
+    @Override
+    public LambdaQuery<T> deleted() {
+        this.where("deleted", SqlKeyword.EQ, 0);
+        return this;
+    }
 }

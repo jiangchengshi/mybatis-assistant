@@ -12,14 +12,14 @@
         ${q.sql}
     </select>
     <insert id="insert">
-        INSERT INTO sys_user(name,py,create_by,create_time)
-        VALUES(#{name},#{py},#{createBy},#{createTime})
+        INSERT INTO sys_user(tenant_id,name,py,create_by,create_time,deleted)
+        VALUES(#{tenantId},#{name},#{py},#{createBy},#{createTime},#{deleted})
     </insert>
     <insert id="batchInsert">
-        INSERT INTO sys_user(name,py,create_by,create_time)
+        INSERT INTO sys_user(tenant_id,name,py,create_by,create_time)
         VALUES
         <foreach collection="list" item="item" separator=",">
-           (#{item.name},#{item.py},#{item.createBy},#{item.createTime})
+           (#{item.tenantId},#{item.name},#{item.py},#{item.createBy},#{item.createTime})
         </foreach>
     </insert>
 </mapper>
