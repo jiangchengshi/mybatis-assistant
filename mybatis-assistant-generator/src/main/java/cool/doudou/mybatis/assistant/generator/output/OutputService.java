@@ -4,9 +4,8 @@ import cool.doudou.mybatis.assistant.expansion.util.ComUtil;
 import cool.doudou.mybatis.assistant.generator.Constant;
 import cool.doudou.mybatis.assistant.generator.config.GlobalConfig;
 import cool.doudou.mybatis.assistant.generator.config.PackageConfig;
-import cool.doudou.mybatis.assistant.generator.entity.ClassField;
-import cool.doudou.mybatis.assistant.generator.entity.ClassInstance;
 import cool.doudou.mybatis.assistant.generator.entity.DbColumn;
+import cool.doudou.mybatis.assistant.generator.entity.DbProperty;
 import cool.doudou.mybatis.assistant.generator.entity.DbTable;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -40,7 +39,7 @@ public class OutputService {
         // 环境参数
         Map<String, Object> contextMap = contextMap(dbTable);
         // 模版
-        Map<String, String> templateMap = templateMap((ClassInstance) contextMap.get("instance"));
+        Map<String, String> templateMap = templateMap((Map<String, Object>) contextMap.get("instance"));
         for (Map.Entry<String, String> entry : templateMap.entrySet()) {
             String templateName = entry.getKey();
             String fileName = entry.getValue();
@@ -116,8 +115,8 @@ public class OutputService {
         contextMap.put("author", this.globalConfig.getAuthor());
         contextMap.put("date", new SimpleDateFormat("yyyy/MM/dd").format(new Date()));
         contextMap.put("package", this.packageConfig);
-        contextMap.put("instance", instance(dbTable.getName()));
-        contextMap.put("entityMap", entityMap(dbTable.getColumnList()));
+        contextMap.put("instance", instance(dbTable.getName(), dbTable.getColumnList()));
+        contextMap.put("xmlMap", xmlMap(dbTable.getColumnList()));
         return contextMap;
     }
 
@@ -125,70 +124,93 @@ public class OutputService {
      * 根据 tableName 生成 instance相关
      *
      * @param tableName
+     * @param columnList
      * @return
      */
-    private ClassInstance instance(String tableName) {
+    private Map<String, Object> instance(String tableName, List<DbColumn> columnList) {
+        Map<String, Object> instanceMap = new HashMap<>();
         int firstIndex = tableName.indexOf("_");
-        String underlineName = tableName.substring(firstIndex + 1);
-        String name = ComUtil.underline2Hump(underlineName);
+        String name = ComUtil.underline2Hump(tableName.substring(firstIndex + 1));
         String className = ComUtil.upperFirst(name);
-        ClassInstance classInstance = new ClassInstance();
-        classInstance.setController(name + Constant.CONTROLLER);
-        classInstance.setControllerClass(className + Constant.CONTROLLER);
-        classInstance.setService(name + Constant.SERVICE);
-        classInstance.setServiceClass(className + Constant.SERVICE);
-        classInstance.setMapper(name + Constant.MAPPER);
-        classInstance.setMapperClass(className + Constant.MAPPER);
-        classInstance.setEntity(name);
-        classInstance.setEntityClass(className);
-        return classInstance;
+        instanceMap.put("controller", name + Constant.CONTROLLER);
+        instanceMap.put("controllerClass", className + Constant.CONTROLLER);
+        instanceMap.put("service", name + Constant.SERVICE);
+        instanceMap.put("serviceClass", className + Constant.SERVICE);
+        instanceMap.put("mapper", name + Constant.MAPPER);
+        instanceMap.put("mapperClass", className + Constant.MAPPER);
+        instanceMap.put("entity", name);
+        instanceMap.put("entityClass", className);
+
+        List<DbProperty> dbPropertyList = new ArrayList<>();
+        Set<String> importPackageSet = new HashSet<>();
+        columnList.forEach((column -> {
+            String columnName = column.getName();
+
+            // 剔除BaseEntity中属性
+            if (!"id".equals(columnName) && !"create_by".equals(columnName) && !"create_time".equals(columnName)
+                    && !"update_by".equals(columnName) && !"update_time".equals(columnName) && !"deleted".equals(columnName)) {
+                DbProperty dbProperty = new DbProperty();
+                dbProperty.setName(ComUtil.underline2Hump(columnName));
+                dbProperty.setJavaType(ComUtil.convert2JavaType(column.getDataType()));
+                dbProperty.setComment(column.getComment());
+                dbPropertyList.add(dbProperty);
+
+                // 引入数据类型包
+                switch (dbProperty.getJavaType()) {
+                    case "LocalDate":
+                        importPackageSet.add("java.time.LocalDate");
+                        break;
+                    case "LocalTime":
+                        importPackageSet.add("java.time.LocalTime");
+                        break;
+                    case "LocalDateTime":
+                        importPackageSet.add("java.time.LocalDateTime");
+                        break;
+                    case "BigDecimal":
+                        importPackageSet.add("java.math.BigDecimal");
+                        break;
+                    case "Blob":
+                        importPackageSet.add("java.sql.Blob");
+                }
+            }
+        }));
+        instanceMap.put("propertyList", dbPropertyList);
+        instanceMap.put("importPackageSet", importPackageSet);
+        return instanceMap;
     }
 
     /**
-     * 根据 columnList 生成 entity相关
+     * 根据 columnList 生成 xml相关
      *
      * @param columnList
      * @return
      */
-    private Map<String, Object> entityMap(List<DbColumn> columnList) {
-        Map<String, Object> entityMap = new HashMap<>(3);
-        entityMap.put("columnList", columnList);
+    private Map<String, Object> xmlMap(List<DbColumn> columnList) {
+        Map<String, Object> xmlMap = new HashMap<>(3);
+        xmlMap.put("columnList", columnList);
 
         // 字段
-        List<ClassField> fieldList = new ArrayList<>();
-        // 字段属性导入包
-        Set<String> pkgSet = new HashSet<>();
-
+        List<DbProperty> dbPropertyList = new ArrayList<>();
         columnList.forEach(column -> {
-            ClassField classField = new ClassField();
-            classField.setName(ComUtil.underline2Hump(column.getName()));
-            classField.setJavaType(ComUtil.convert2JavaType(column.getDataType()));
-            classField.setComment(column.getComment());
-            fieldList.add(classField);
-
-            if ("Date".equals(classField.getJavaType())) {
-                pkgSet.add("java.util.Date");
-            } else if ("BigDecimal".equals(classField.getJavaType())) {
-                pkgSet.add("java.math.BigDecimal");
-            } else if ("Blob".equals(classField.getJavaType())) {
-                pkgSet.add("java.sql.Blob");
-            }
+            DbProperty dbProperty = new DbProperty();
+            dbProperty.setName(ComUtil.underline2Hump(column.getName()));
+            dbProperty.setJavaType(ComUtil.convert2JavaType(column.getDataType()));
+            dbProperty.setComment(column.getComment());
+            dbPropertyList.add(dbProperty);
         });
-        entityMap.put("fieldList", fieldList);
-        entityMap.put("importPackages", pkgSet);
+        xmlMap.put("propertyList", dbPropertyList);
 
-        return entityMap;
+        return xmlMap;
     }
 
     /**
      * 模版
      *
-     * @param instance
+     * @param instanceMap
      * @return
      */
-    private Map<String, String> templateMap(ClassInstance instance) {
-        String entityClass = instance.getEntityClass();
-
+    private Map<String, String> templateMap(Map<String, Object> instanceMap) {
+        String entityClass = String.valueOf(instanceMap.get("entityClass"));
         Map<String, String> templateMap = new HashMap<>(5);
         templateMap.put("template/controller.java.vm", entityClass + "Controller.java");
         templateMap.put("template/service.java.vm", entityClass + "Service.java");

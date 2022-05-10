@@ -76,10 +76,12 @@ public class ComUtil {
             case "bigint":
                 return "Long";
             case "date":
+                return "LocalDate";
             case "time":
+                return "LocalTime";
             case "datetime":
             case "timestamp":
-                return "Date";
+                return "LocalDateTime";
             case "blob":
                 return "Blob";
             default:

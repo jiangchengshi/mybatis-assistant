@@ -24,7 +24,7 @@ public class ${instance.controllerClass} {
 
     @ApiOperation(value = "分页查询", notes = "分页参数、实体查询条件")
     @PostMapping("/page")
-    public PageInfo<${instance.entityClass}> getPage(PageDTO<${instance.entityClass}> pageDTO) {
+    public PageInfo<${instance.entityClass}> page(@RequestBody PageDTO<${instance.entityClass}> pageDTO) {
         return ${instance.service}.page(pageDTO.page(), pageDTO.data());
     }
 
@@ -36,19 +36,19 @@ public class ${instance.controllerClass} {
 
     @ApiOperation(value = "添加记录", notes = "实体记录")
     @PostMapping("/add")
-    public int add(${instance.entityClass} ${instance.entity}) {
+    public int add(@RequestBody ${instance.entityClass} ${instance.entity}) {
         return ${instance.service}.add(${instance.entity});
     }
 
     @ApiOperation(value = "编辑记录", notes = "实体记录")
     @PostMapping("/edit")
-    public int edit(${instance.entityClass} ${instance.entity}) {
+    public int edit(@RequestBody ${instance.entityClass} ${instance.entity}) {
         return ${instance.service}.edit(${instance.entity});
     }
 
     @ApiOperation(value = "根据 ids 删除记录", notes = "记录Ids")
     @PostMapping("/delete")
-    public int delete(String ids) {
+    public int delete(@RequestBody String ids) {
         return ${instance.service}.delete(ids);
     }
 }

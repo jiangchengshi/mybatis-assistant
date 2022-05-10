@@ -51,15 +51,8 @@ public class TableService {
                 preparedStatement.setString(2, tableName);
                 resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    String columnName = String.valueOf(resultSet.getObject("COLUMN_NAME"));
-                    // 剔除BaseEntity中属性
-                    if ("id".equals(columnName) || "create_by".equals(columnName) || "create_time".equals(columnName)
-                            || "update_by".equals(columnName) || "update_time".equals(columnName) || "deleted".equals(columnName)) {
-                        continue;
-                    }
-
                     dbColumn = new DbColumn();
-                    dbColumn.setName(columnName);
+                    dbColumn.setName(String.valueOf(resultSet.getObject("COLUMN_NAME")));
                     dbColumn.setDataType(String.valueOf(resultSet.getObject("DATA_TYPE")));
                     dbColumn.setComment(String.valueOf(resultSet.getObject("COLUMN_COMMENT")));
                     dbColumn.setKey(String.valueOf(resultSet.getObject("COLUMN_KEY")));

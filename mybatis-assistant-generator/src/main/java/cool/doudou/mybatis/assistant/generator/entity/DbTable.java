@@ -3,7 +3,7 @@ package cool.doudou.mybatis.assistant.generator.entity;
 import java.util.List;
 
 /**
- * 数据表
+ * 表信息
  *
  * @author jiangcs
  * @since 2022/4/18
@@ -18,7 +18,7 @@ public class DbTable {
      */
     private String comment;
     /**
-     * 数据列集合
+     * 列集合
      */
     private List<DbColumn> columnList;
 
