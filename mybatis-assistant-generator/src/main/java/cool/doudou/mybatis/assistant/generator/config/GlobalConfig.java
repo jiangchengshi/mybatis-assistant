@@ -14,7 +14,11 @@ public class GlobalConfig {
     /**
      * 输出路径
      */
-    private String outputDir = System.getProperty("os.name").toLowerCase().contains("windows") ? "D://" : "./tmp";
+    private String outputDir = System.getProperty("user.dir");
+    /**
+     * 覆盖
+     */
+    private boolean cover = false;
     /**
      * 是否 打开目录
      */
@@ -30,6 +34,11 @@ public class GlobalConfig {
         return this;
     }
 
+    public GlobalConfig cover(boolean cover) {
+        this.cover = cover;
+        return this;
+    }
+
     public GlobalConfig openDir(boolean openDir) {
         this.openDir = openDir;
         return this;
@@ -41,6 +50,10 @@ public class GlobalConfig {
 
     public String getOutputDir() {
         return outputDir;
+    }
+
+    public boolean isCover() {
+        return cover;
     }
 
     public boolean isOpenDir() {
