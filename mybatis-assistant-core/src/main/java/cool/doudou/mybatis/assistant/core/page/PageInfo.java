@@ -2,6 +2,7 @@ package cool.doudou.mybatis.assistant.core.page;
 
 import cool.doudou.mybatis.assistant.core.helper.PageHelper;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class PageInfo<T> {
     /**
      * 总记录数
      */
-    private long total = 0;
+    private long total;
     /**
      * 总页数
      */
@@ -40,8 +41,11 @@ public class PageInfo<T> {
     }
 
     public static <T> PageInfo<T> of(List<T> list) {
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        long total = list.size();
         int pageNum = 1, pageSize = 20;
-        long total = 0;
         Page page = PageHelper.getLocalPage();
         if (page != null) {
             total = page.getTotal();

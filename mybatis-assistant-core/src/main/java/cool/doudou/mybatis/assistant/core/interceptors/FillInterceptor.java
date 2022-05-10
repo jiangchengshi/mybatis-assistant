@@ -1,8 +1,8 @@
 package cool.doudou.mybatis.assistant.core.interceptors;
 
-import cool.doudou.mybatiis.assistant.annotation.enums.CommandTypeEnum;
 import cool.doudou.mybatis.assistant.core.handler.IDeletedFillHandler;
 import cool.doudou.mybatis.assistant.core.handler.IFieldFillHandler;
+import cool.doudou.mybatis.assistant.core.handler.IIdFillHandler;
 import cool.doudou.mybatis.assistant.core.handler.ITenantFillHandler;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -23,9 +23,10 @@ import java.util.Properties;
         @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})
 )
 public class FillInterceptor implements Interceptor {
+    private volatile IIdFillHandler idFillHandler;
     private volatile IFieldFillHandler fieldFillHandler;
-    private volatile ITenantFillHandler tenantFillHandler;
     private volatile IDeletedFillHandler deletedFillHandler;
+    private volatile ITenantFillHandler tenantFillHandler;
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
@@ -33,7 +34,12 @@ public class FillInterceptor implements Interceptor {
         MappedStatement mappedStatement = (MappedStatement) args[0];
         MetaObject metaObject = SystemMetaObject.forObject(args[1]);
         SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
-        if (sqlCommandType.name().equals(CommandTypeEnum.INSERT.name())) {
+        if (sqlCommandType == SqlCommandType.INSERT) {
+            // 记录Id填充
+            if (idFillHandler != null) {
+                idFillHandler.fill(metaObject);
+            }
+
             // 字段填充
             if (fieldFillHandler != null) {
                 fieldFillHandler.insert(metaObject);
@@ -48,7 +54,7 @@ public class FillInterceptor implements Interceptor {
             if (tenantFillHandler != null) {
                 tenantFillHandler.fill(metaObject);
             }
-        } else if (sqlCommandType.name().equals(CommandTypeEnum.UPDATE.name())) {
+        } else if (sqlCommandType == SqlCommandType.UPDATE) {
             // 字段填充
             if (fieldFillHandler != null) {
                 fieldFillHandler.update(metaObject);
@@ -65,9 +71,10 @@ public class FillInterceptor implements Interceptor {
     @Override
     public void setProperties(Properties properties) {
         if (!properties.isEmpty()) {
+            idFillHandler = (IIdFillHandler) properties.get("idFillHandler");
             fieldFillHandler = (IFieldFillHandler) properties.get("fieldFillHandler");
-            tenantFillHandler = (ITenantFillHandler) properties.get("tenantFillHandler");
             deletedFillHandler = (IDeletedFillHandler) properties.get("deletedFillHandler");
+            tenantFillHandler = (ITenantFillHandler) properties.get("tenantFillHandler");
         }
     }
 }

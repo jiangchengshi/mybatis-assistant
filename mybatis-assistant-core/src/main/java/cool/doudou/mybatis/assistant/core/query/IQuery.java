@@ -96,7 +96,9 @@ public interface IQuery<Child, R> {
         StringBuilder sbQuerySql = new StringBuilder();
 
         // 查询
-        sbQuerySql.append(SqlKeyword.WHERE.get()).append(Constant.SPACE).append(String.join(Constant.SPACE + SqlKeyword.AND.get() + Constant.SPACE, whereList));
+        if (!whereList.isEmpty()) {
+            sbQuerySql.append(SqlKeyword.WHERE.get()).append(Constant.SPACE).append(String.join(Constant.SPACE + SqlKeyword.AND.get() + Constant.SPACE, whereList));
+        }
         // 分组
         if (!groupBySet.isEmpty()) {
             sbQuerySql.append(Constant.SPACE).append(SqlKeyword.GROUP_BY.get()).append(Constant.SPACE).append(String.join(Constant.COMMA, groupBySet));

@@ -7,6 +7,7 @@ import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
@@ -36,19 +37,18 @@ public class QueryInterceptor implements Interceptor {
     public Object intercept(Invocation invocation) throws Throwable {
         StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
         MetaObject metaObject = SystemMetaObject.forObject(statementHandler);
-        BoundSql boundSql = statementHandler.getBoundSql();
-        Object parameterObject = boundSql.getParameterObject();
         MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
-
-        // 通过反射拿出来 BoundSql 中保存的额外参数（如果我们使用了动态 SQL，可能会存在该参数）
-        Field additionalParametersField = BoundSql.class.getDeclaredField("additionalParameters");
-        additionalParametersField.setAccessible(true);
-        Map<String, Object> additionalParameterMap = (Map<String, Object>) additionalParametersField.get(boundSql);
-
-        String id = mappedStatement.getId();
-        if (id.matches(".+Page$")) {
+        SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
+        if (sqlCommandType == SqlCommandType.SELECT) {
+            BoundSql boundSql = statementHandler.getBoundSql();
+            Object parameterObject = boundSql.getParameterObject();
             Page page = PageHelper.getPage(parameterObject);
             if (page != null) {
+                // 通过反射拿出来 BoundSql 中保存的额外参数（如果我们使用了动态 SQL，可能会存在该参数）
+                Field additionalParametersField = BoundSql.class.getDeclaredField("additionalParameters");
+                additionalParametersField.setAccessible(true);
+                Map<String, Object> additionalParameterMap = (Map<String, Object>) additionalParametersField.get(boundSql);
+
                 Connection connection = (Connection) invocation.getArgs()[0];
                 // Count SQL
                 BoundSql countBoundSql = dialectHandler.getCountSql(mappedStatement, parameterObject, boundSql, additionalParameterMap);
@@ -68,10 +68,10 @@ public class QueryInterceptor implements Interceptor {
                 // 分页 SQL
                 boundSql = dialectHandler.getPageSql(mappedStatement, parameterObject, boundSql, additionalParameterMap, page.getPageNum(), page.getPageSize());
             }
-        }
 
-        // 覆盖boundSql
-        metaObject.setValue("delegate.boundSql", boundSql);
+            // 覆盖boundSql
+            metaObject.setValue("delegate.boundSql", boundSql);
+        }
         return invocation.proceed();
     }
 

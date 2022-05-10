@@ -1,7 +1,7 @@
 package cool.doudou.mybatis.assistant.generator.entity;
 
 /**
- * 数据列
+ * 列信息
  *
  * @author jiangcs
  * @since 2022/4/18

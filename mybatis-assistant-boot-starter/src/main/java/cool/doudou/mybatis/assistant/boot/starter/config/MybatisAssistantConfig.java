@@ -86,6 +86,7 @@ public class MybatisAssistantConfig {
             } else {
                 Properties properties = new Properties();
                 properties.put("fieldFillHandler", fieldFillHandler);
+                properties.put("deletedFillHandler", deletedFillHandler);
                 properties.put("tenantFillHandler", tenantFillHandler);
                 fillInterceptor.setProperties(properties);
                 sqlSessionFactory.getConfiguration().addInterceptor(fillInterceptor);
@@ -116,6 +117,11 @@ public class MybatisAssistantConfig {
     @Autowired(required = false)
     public void setFieldFillHandler(IFieldFillHandler fieldFillHandler) {
         this.fieldFillHandler = fieldFillHandler;
+    }
+
+    @Autowired(required = false)
+    public void setDeletedFillHandler(IDeletedFillHandler deletedFillHandler) {
+        this.deletedFillHandler = deletedFillHandler;
     }
 
     @Autowired(required = false)

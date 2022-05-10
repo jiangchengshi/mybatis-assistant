@@ -73,7 +73,7 @@ public class MybatisAssistantCoreTest {
             sqlSession = MybatisConfigHelper.getSqlSession();
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 
-            PageDTO<User> pageDTO = new PageDTO<>(2, 20);
+            PageDTO<User> pageDTO = new PageDTO<>(2, 20, null);
 
             LambdaQuery<User> lambdaQuery = new LambdaQuery<>();
             lambdaQuery.lk(User::getPy, "C");

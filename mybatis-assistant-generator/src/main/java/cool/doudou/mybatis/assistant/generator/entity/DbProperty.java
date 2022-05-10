@@ -1,14 +1,23 @@
 package cool.doudou.mybatis.assistant.generator.entity;
 
 /**
- * 类字段
+ * 属性信息
  *
  * @author jiangcs
- * @since 2022/4/20
+ * @since 2022/4/18
  */
-public class ClassField {
+public class DbProperty {
+    /**
+     * 属性名
+     */
     private String name;
+    /**
+     * java数据类型
+     */
     private String javaType;
+    /**
+     * 注释
+     */
     private String comment;
 
     public String getName() {

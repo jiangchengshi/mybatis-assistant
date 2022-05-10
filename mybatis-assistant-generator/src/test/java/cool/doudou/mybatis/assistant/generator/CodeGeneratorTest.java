@@ -18,7 +18,7 @@ public class CodeGeneratorTest {
                 .globalConfig(new GlobalConfig().author("jiangcs"))
                 .packageConfig(new PackageConfig().parent("cool.doudou.celery.upms"))
                 .tableConfig(new TableConfig().schema("celery-upms")
-                        .nameList("sys_role"))
+                        .nameList("sys_user"))
                 .execute();
     }
 }
