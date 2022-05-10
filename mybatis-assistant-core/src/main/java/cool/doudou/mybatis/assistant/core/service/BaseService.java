@@ -49,12 +49,12 @@ public class BaseService<M extends BaseMapper<T>, T> {
     }
 
     /**
-     * 修改记录
+     * 编辑记录
      *
      * @param t 实体参数
      * @return int
      */
-    public int modify(T t) {
+    public int edit(T t) {
         return baseMapper.update(t);
     }
 

@@ -34,7 +34,7 @@ implementation("cool.doudou:mybatis-assistant-boot-starter:latest")
 
 > Latest
 >
-Version: [![Maven Central](https://img.shields.io/badge/Maven-v1.0.2-blue)](https://search.maven.org/search?q=g:cool.doudou%20a:mybatis-assistant-*)
+Version: [![Maven Central](https://img.shields.io/badge/Maven-v1.0.4-blue)](https://search.maven.org/search?q=g:cool.doudou%20a:mybatis-assistant-*)
 
 4. 配置mybatis-assistant属性
 

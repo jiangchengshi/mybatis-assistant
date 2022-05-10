@@ -89,5 +89,7 @@ public class CodeGenerator {
                 outputService.execute(dbTable);
             }
         });
+
+        System.out.println("code generator ok.");
     }
 }

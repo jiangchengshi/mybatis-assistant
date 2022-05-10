@@ -44,23 +44,38 @@ public class OutputService {
         for (Map.Entry<String, String> entry : templateMap.entrySet()) {
             String templateName = entry.getKey();
             String fileName = entry.getValue();
-            File parentPath = new File(this.globalConfig.getOutputDir() + File.separator + this.packageConfig.getPath(fileName));
-            if (!parentPath.exists()) {
-                parentPath.mkdirs();
+
+            String parentPath, packagePath;
+            if (templateName.endsWith("java.vm")) {
+                parentPath = this.globalConfig.getOutputDir() + File.separator + "src" + File.separator + "main" + File.separator + "java";
+                packagePath = this.packageConfig.getParent().replaceAll("\\.", File.separator) + File.separator + this.packageConfig.getPath(fileName);
+            } else {
+                parentPath = this.globalConfig.getOutputDir() + File.separator + "src" + File.separator + "main" + File.separator + "resources";
+                packagePath = "mapper";
+            }
+            File parentFile = new File(parentPath + File.separator + packagePath);
+            if (!parentFile.exists()) {
+                parentFile.mkdirs();
             }
 
             try {
-                String directory = parentPath.getAbsolutePath();
-                FileWriter writer = new FileWriter(directory + File.separator + fileName);
-                Template template = Velocity.getTemplate(templateName, StandardCharsets.UTF_8.name());
-                template.merge(new VelocityContext(contextMap), writer);
-                writer.flush();
-                writer.close();
-
-                openDir(directory);
+                File file = new File(parentFile, fileName);
+                if (!file.exists() || (file.exists() && this.globalConfig.isCover())) {
+                    FileWriter writer = new FileWriter(file);
+                    Template template = Velocity.getTemplate(templateName, StandardCharsets.UTF_8.name());
+                    template.merge(new VelocityContext(contextMap), writer);
+                    writer.flush();
+                    writer.close();
+                } else {
+                    System.err.println("file[" + file.getAbsolutePath() + "] exists.");
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        if (this.globalConfig.isOpenDir()) {
+            openDir(this.globalConfig.getOutputDir());
         }
     }
 
@@ -68,10 +83,9 @@ public class OutputService {
      * 打开目录
      *
      * @param directory
-     * @throws Exception
      */
-    private void openDir(String directory) throws Exception {
-        if (this.globalConfig.isOpenDir()) {
+    private void openDir(String directory) {
+        try {
             String osName = System.getProperty("os.name");
             if (osName != null) {
                 if (osName.contains("Mac")) {
@@ -84,6 +98,8 @@ public class OutputService {
             } else {
                 System.err.println("操作系统获取失败");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
