@@ -6,7 +6,7 @@ import cool.doudou.mybatis.assistant.generator.config.DataSourceConfig;
 import cool.doudou.mybatis.assistant.generator.config.GlobalConfig;
 import cool.doudou.mybatis.assistant.generator.config.PackageConfig;
 import cool.doudou.mybatis.assistant.generator.config.TableConfig;
-import cool.doudou.mybatis.assistant.generator.entity.DbTable;
+import cool.doudou.mybatis.assistant.generator.entity.TableInfo;
 import cool.doudou.mybatis.assistant.generator.output.OutputService;
 import cool.doudou.mybatis.assistant.generator.table.TableService;
 import org.apache.velocity.app.Velocity;
@@ -84,12 +84,12 @@ public class CodeGenerator {
         TableService tableService = new TableService(this.dataSourceConfig, this.tableConfig);
         OutputService outputService = new OutputService(this.globalConfig, this.packageConfig);
         this.tableConfig.getNameList().forEach(tableName -> {
-            DbTable dbTable = tableService.getInfo(tableName, driverClassName, tableSql, columnSql);
-            if (dbTable != null) {
-                outputService.execute(dbTable);
+            TableInfo tableInfo = tableService.getInfo(tableName, driverClassName, tableSql, columnSql);
+            if (tableInfo != null) {
+                outputService.execute(tableInfo);
             }
         });
 
-        System.out.println("code generator ok.");
+        System.out.println("code generate ok.");
     }
 }
