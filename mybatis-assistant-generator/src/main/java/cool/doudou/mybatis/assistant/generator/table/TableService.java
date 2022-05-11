@@ -2,8 +2,8 @@ package cool.doudou.mybatis.assistant.generator.table;
 
 import cool.doudou.mybatis.assistant.generator.config.DataSourceConfig;
 import cool.doudou.mybatis.assistant.generator.config.TableConfig;
-import cool.doudou.mybatis.assistant.generator.entity.DbColumn;
-import cool.doudou.mybatis.assistant.generator.entity.DbTable;
+import cool.doudou.mybatis.assistant.generator.entity.Column;
+import cool.doudou.mybatis.assistant.generator.entity.TableInfo;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class TableService {
         this.tableConfig = tableConfig;
     }
 
-    public DbTable getInfo(String tableName, String driverClassName, String tableSql, String columnSql) {
+    public TableInfo getInfo(String tableName, String driverClassName, String tableSql, String columnSql) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -32,35 +32,35 @@ public class TableService {
             Class.forName(driverClassName);
             connection = DriverManager.getConnection(this.dataSourceConfig.getUrl(), this.dataSourceConfig.getUser(), this.dataSourceConfig.getPassword());
 
-            DbTable dbTable;
+            TableInfo tableInfo;
             // 表信息
             preparedStatement = connection.prepareStatement(tableSql);
             preparedStatement.setString(1, this.tableConfig.getSchema());
             preparedStatement.setString(2, tableName);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                dbTable = new DbTable();
-                dbTable.setName(tableName);
-                dbTable.setComment(String.valueOf(resultSet.getObject("TABLE_COMMENT")));
+                tableInfo = new TableInfo();
+                tableInfo.setName(tableName);
+                tableInfo.setComment(String.valueOf(resultSet.getObject("TABLE_COMMENT")));
 
                 // 字段信息
-                DbColumn dbColumn;
-                List<DbColumn> dbColumnList = new ArrayList<>();
+                Column column;
+                List<Column> columnList = new ArrayList<>();
                 preparedStatement = connection.prepareStatement(columnSql);
                 preparedStatement.setString(1, this.tableConfig.getSchema());
                 preparedStatement.setString(2, tableName);
                 resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    dbColumn = new DbColumn();
-                    dbColumn.setName(String.valueOf(resultSet.getObject("COLUMN_NAME")));
-                    dbColumn.setDataType(String.valueOf(resultSet.getObject("DATA_TYPE")));
-                    dbColumn.setComment(String.valueOf(resultSet.getObject("COLUMN_COMMENT")));
-                    dbColumn.setKey(String.valueOf(resultSet.getObject("COLUMN_KEY")));
-                    dbColumnList.add(dbColumn);
+                    column = new Column();
+                    column.setName(String.valueOf(resultSet.getObject("COLUMN_NAME")));
+                    column.setDataType(String.valueOf(resultSet.getObject("DATA_TYPE")));
+                    column.setComment(String.valueOf(resultSet.getObject("COLUMN_COMMENT")));
+                    column.setKey(String.valueOf(resultSet.getObject("COLUMN_KEY")));
+                    columnList.add(column);
                 }
-                dbTable.setColumnList(dbColumnList);
+                tableInfo.setColumnList(columnList);
 
-                return dbTable;
+                return tableInfo;
             }
             System.err.println("prompt: table[" + tableName + "] not exists");
         } catch (ClassNotFoundException | SQLException e) {

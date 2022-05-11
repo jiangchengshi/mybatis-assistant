@@ -2,24 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${package.parent}#if($package.module!='').${package.module}#end.${package.mapper}.${instance.mapperClass}">
     <select id="selectById" resultType="${package.parent}#if($package.module!='').${package.module}#end.${package.entity}.${instance.entityClass}">
-        SELECT #foreach($column in ${xmlMap.columnList})#if($foreach.index>=1),#end$tableName.${column.name} AS ${xmlMap.propertyList[$foreach.index].name}#end
-        FROM $tableName $tableName
-        WHERE ${tableName}.id = #{id}
+        SELECT #foreach($column in ${xmlMap.columnList})#if($foreach.index>=1),#end$tableNameAlias.${column.name} AS ${xmlMap.propertyList[$foreach.index].name}#end
+        FROM $tableName $tableNameAlias
+        WHERE ${tableNameAlias}.id = #{id}
     </select>
     <select id="selectList" resultType="${package.parent}#if($package.module!='').${package.module}#end.${package.entity}.${instance.entityClass}">
-        SELECT #foreach($column in ${xmlMap.columnList})#if($foreach.index>=1),#end$tableName.${column.name} AS ${xmlMap.propertyList[$foreach.index].name}#end
-        FROM $tableName $tableName
+        SELECT #foreach($column in ${xmlMap.columnList})#if($foreach.index>=1),#end$tableNameAlias.${column.name} AS ${xmlMap.propertyList[$foreach.index].name}#end
+        FROM $tableName $tableNameAlias
         ${q.sql}
     </select>
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO $tableName
-        (#foreach($column in ${xmlMap.columnList})#if($foreach.index>=1),#end${column.name}#end)
+        (#foreach($column in ${xmlMap.columnInsertList})#if($foreach.index>=1),#end${column.name}#end)
         VALUES
-        (#foreach($property in ${xmlMap.propertyList})#if($foreach.index>=1),#end#{${property.name}}#end)
+        (#foreach($property in ${xmlMap.propertyInsertList})#if($foreach.index>=1),#end#{${property.name}}#end)
     </insert>
     <update id="update">
         UPDATE $tableName
-        SET #foreach($column in ${xmlMap.columnList})#if($foreach.index>=1),#end${column.name}=#{${xmlMap.propertyList[$foreach.index].name}}#end
+        SET #foreach($column in ${xmlMap.columnUpdateList})#if($foreach.index>=1),#end${column.name}=#{${xmlMap.propertyUpdateList[$foreach.index].name}}#end
         WHERE id = #{id}
     </update>
     <delete id="deleteByIds">

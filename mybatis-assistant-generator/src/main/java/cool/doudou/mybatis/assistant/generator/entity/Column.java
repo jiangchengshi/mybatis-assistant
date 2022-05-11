@@ -6,7 +6,7 @@ package cool.doudou.mybatis.assistant.generator.entity;
  * @author jiangcs
  * @since 2022/4/18
  */
-public class DbColumn {
+public class Column {
     /**
      * 字段名：COLUMN_NAME
      */

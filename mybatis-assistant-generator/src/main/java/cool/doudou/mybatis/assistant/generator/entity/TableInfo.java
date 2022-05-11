@@ -8,7 +8,7 @@ import java.util.List;
  * @author jiangcs
  * @since 2022/4/18
  */
-public class DbTable {
+public class TableInfo {
     /**
      * 数据表名：
      */
@@ -20,7 +20,7 @@ public class DbTable {
     /**
      * 列集合
      */
-    private List<DbColumn> columnList;
+    private List<Column> columnList;
 
     public String getName() {
         return name;
@@ -38,11 +38,11 @@ public class DbTable {
         this.comment = comment;
     }
 
-    public List<DbColumn> getColumnList() {
+    public List<Column> getColumnList() {
         return columnList;
     }
 
-    public void setColumnList(List<DbColumn> columnList) {
+    public void setColumnList(List<Column> columnList) {
         this.columnList = columnList;
     }
 }

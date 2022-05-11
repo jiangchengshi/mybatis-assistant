@@ -6,7 +6,7 @@ package cool.doudou.mybatis.assistant.generator.entity;
  * @author jiangcs
  * @since 2022/4/18
  */
-public class DbProperty {
+public class Property {
     /**
      * 属性名
      */
