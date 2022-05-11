@@ -1,7 +1,7 @@
 package cool.doudou.mybatis.assistant.core.mapper;
 
 import cool.doudou.mybatis.assistant.core.page.Page;
-import cool.doudou.mybatis.assistant.core.query.LambdaQuery;
+import cool.doudou.mybatis.assistant.core.query.IQuery;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,13 +22,21 @@ public interface BaseMapper<T> {
     T selectById(Long id);
 
     /**
+     * 查询记录
+     *
+     * @param query 查询参数
+     * @return 实体记录
+     */
+    T selectOne(@Param("q") IQuery query);
+
+    /**
      * 查询列表
      *
-     * @param page        分页参数
-     * @param lambdaQuery 查询参数
+     * @param page  分页参数
+     * @param query 查询参数
      * @return 实体记录集合
      */
-    List<T> selectList(@Param("pg") Page page, @Param("q") LambdaQuery<T> lambdaQuery);
+    List<T> selectList(@Param("pg") Page page, @Param("q") IQuery query);
 
     /**
      * 新增

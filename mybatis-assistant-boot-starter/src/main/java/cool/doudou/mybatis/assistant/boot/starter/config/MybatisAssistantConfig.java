@@ -3,10 +3,7 @@ package cool.doudou.mybatis.assistant.boot.starter.config;
 import cool.doudou.mybatis.assistant.boot.starter.Constant;
 import cool.doudou.mybatis.assistant.boot.starter.interceptor.InterceptorFactory;
 import cool.doudou.mybatis.assistant.boot.starter.properties.MybatisAssistantProperties;
-import cool.doudou.mybatis.assistant.core.handler.IDeletedFillHandler;
-import cool.doudou.mybatis.assistant.core.handler.IDesensitizeHandler;
-import cool.doudou.mybatis.assistant.core.handler.IFieldFillHandler;
-import cool.doudou.mybatis.assistant.core.handler.ITenantFillHandler;
+import cool.doudou.mybatis.assistant.core.handler.*;
 import cool.doudou.mybatis.assistant.expansion.dialect.DialectHandlerFactory;
 import cool.doudou.mybatis.assistant.expansion.dialect.IDialectHandler;
 import org.apache.ibatis.plugin.Interceptor;
@@ -29,6 +26,7 @@ import java.util.Properties;
  */
 public class MybatisAssistantConfig {
     private MybatisAssistantProperties mybatisAssistantProperties;
+    private IIdFillHandler idFillHandler;
     private IFieldFillHandler fieldFillHandler;
     private IDeletedFillHandler deletedFillHandler;
     private ITenantFillHandler tenantFillHandler;
@@ -72,6 +70,10 @@ public class MybatisAssistantConfig {
         // 注入插件
         Interceptor fillInterceptor = InterceptorFactory.getInstance(Constant.InterceptorName.FILL);
         if (fillInterceptor != null) {
+            // Id处理器
+            if (idFillHandler == null) {
+                System.err.println("interceptor[" + Constant.InterceptorName.FILL + "].idFillHandler must be initialized");
+            }
             // 字段处理器
             if (fieldFillHandler == null) {
                 System.err.println("interceptor[" + Constant.InterceptorName.FILL + "].fieldFillHandler must be initialized");
@@ -85,6 +87,7 @@ public class MybatisAssistantConfig {
                 System.err.println("interceptor[" + Constant.InterceptorName.FILL + "].tenantFillHandler must be initialized");
             } else {
                 Properties properties = new Properties();
+                properties.put("idFillHandler", idFillHandler);
                 properties.put("fieldFillHandler", fieldFillHandler);
                 properties.put("deletedFillHandler", deletedFillHandler);
                 properties.put("tenantFillHandler", tenantFillHandler);
@@ -112,6 +115,11 @@ public class MybatisAssistantConfig {
     @Autowired
     public void setMybatisAssistantProperties(MybatisAssistantProperties mybatisAssistantProperties) {
         this.mybatisAssistantProperties = mybatisAssistantProperties;
+    }
+
+    @Autowired(required = false)
+    public void setIdFillHandler(IIdFillHandler idFillHandler) {
+        this.idFillHandler = idFillHandler;
     }
 
     @Autowired(required = false)

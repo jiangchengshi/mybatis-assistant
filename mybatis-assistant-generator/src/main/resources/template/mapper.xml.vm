@@ -6,6 +6,11 @@
         FROM $tableName $tableNameAlias
         WHERE ${tableNameAlias}.id = #{id}
     </select>
+    <select id="selectOne" resultType="${package.parent}#if($package.module!='').${package.module}#end.${package.entity}.${instance.entityClass}">
+        SELECT #foreach($column in ${xmlMap.columnList})#if($foreach.index>=1),#end$tableNameAlias.${column.name} AS ${xmlMap.propertyList[$foreach.index].name}#end
+        FROM $tableName $tableNameAlias
+        ${q.sql}
+    </select>
     <select id="selectList" resultType="${package.parent}#if($package.module!='').${package.module}#end.${package.entity}.${instance.entityClass}">
         SELECT #foreach($column in ${xmlMap.columnList})#if($foreach.index>=1),#end$tableNameAlias.${column.name} AS ${xmlMap.propertyList[$foreach.index].name}#end
         FROM $tableName $tableNameAlias
