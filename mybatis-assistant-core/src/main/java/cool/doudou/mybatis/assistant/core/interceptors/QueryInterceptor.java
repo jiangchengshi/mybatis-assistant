@@ -17,7 +17,6 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
 
@@ -61,16 +60,14 @@ public class QueryInterceptor implements Interceptor {
                     count = resultSet.getLong(1);
                 }
                 page.setTotal(count);
-                // count <= 0，返回 空集合
-                if (count <= 0) {
-                    return Collections.emptyList();
-                }
-                // 分页 SQL
-                boundSql = dialectHandler.getPageSql(mappedStatement, parameterObject, boundSql, additionalParameterMap, page.getPageNum(), page.getPageSize());
-            }
 
-            // 覆盖boundSql
-            metaObject.setValue("delegate.boundSql", boundSql);
+                if (count > 0) {
+                    // 分页 SQL
+                    BoundSql pageBoundSql = dialectHandler.getPageSql(mappedStatement, parameterObject, boundSql, additionalParameterMap, page.getPageNum(), page.getPageSize());
+                    // 覆盖boundSql
+                    metaObject.setValue("delegate.boundSql", pageBoundSql);
+                }
+            }
         }
         return invocation.proceed();
     }

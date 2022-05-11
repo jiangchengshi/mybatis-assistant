@@ -10,6 +10,8 @@ import org.apache.ibatis.reflection.MetaObject;
  * @since 2022/4/9
  */
 public interface IIdFillHandler {
+    Long nextId();
+
     /**
      * 不需要实现重写
      *
@@ -17,9 +19,9 @@ public interface IIdFillHandler {
      */
     default void fill(MetaObject metaObject) {
         if (metaObject.hasGetter("id")) {
-            Object tenantId = metaObject.getValue("id");
-            if (tenantId == null) {
-                metaObject.setValue("id", IdUtil.nextId());
+            Object id = metaObject.getValue("id");
+            if (id == null) {
+                metaObject.setValue("id", nextId() != null ? nextId() : IdUtil.nextId());
             }
         }
     }

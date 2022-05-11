@@ -17,6 +17,27 @@ public class BaseService<M extends BaseMapper<T>, T> {
     private M baseMapper;
 
     /**
+     * 根据 id 查询记录
+     *
+     * @param id 记录Id
+     * @return T
+     */
+    public T getById(Long id) {
+        return baseMapper.selectById(id);
+    }
+
+    /**
+     * 根据 id 查询记录
+     *
+     * @param t 实体参数
+     * @return T
+     */
+    public T get(T t) {
+        LambdaQuery<T> lambdaQuery = new LambdaQuery<>(t);
+        return baseMapper.selectOne(lambdaQuery);
+    }
+
+    /**
      * 分页查询
      *
      * @param page 分页参数
@@ -24,38 +45,28 @@ public class BaseService<M extends BaseMapper<T>, T> {
      * @return PageInfo
      */
     public PageInfo<T> page(Page page, T t) {
-        LambdaQuery<T> lambdaQuery = new LambdaQuery<>();
+        LambdaQuery<T> lambdaQuery = new LambdaQuery<>(t);
         return PageInfo.of(baseMapper.selectList(page, lambdaQuery));
-    }
-
-    /**
-     * 根据 id 查询记录
-     *
-     * @param id 记录Id
-     * @return T
-     */
-    public T get(Long id) {
-        return baseMapper.selectById(id);
     }
 
     /**
      * 添加记录
      *
      * @param t 实体参数
-     * @return int
+     * @return boolean
      */
-    public int add(T t) {
-        return baseMapper.insert(t);
+    public boolean add(T t) {
+        return retBool(baseMapper.insert(t));
     }
 
     /**
      * 编辑记录
      *
      * @param t 实体参数
-     * @return int
+     * @return boolean
      */
-    public int edit(T t) {
-        return baseMapper.update(t);
+    public boolean edit(T t) {
+        return retBool(baseMapper.update(t));
     }
 
     /**
@@ -64,7 +75,11 @@ public class BaseService<M extends BaseMapper<T>, T> {
      * @param ids 记录Ids
      * @return int
      */
-    public int delete(String ids) {
-        return baseMapper.deleteByIds(ids);
+    public boolean delete(String ids) {
+        return retBool(baseMapper.deleteByIds(ids));
+    }
+
+    private boolean retBool(int count) {
+        return count > 0;
     }
 }

@@ -1,5 +1,7 @@
 package cool.doudou.mybatis.assistant.core.query;
 
+import cool.doudou.mybatiis.assistant.annotation.QueryOpr;
+import cool.doudou.mybatiis.assistant.annotation.enums.SqlOprEnum;
 import cool.doudou.mybatis.assistant.core.Constant;
 import cool.doudou.mybatis.assistant.core.enums.SqlKeyword;
 import cool.doudou.mybatis.assistant.expansion.util.ComUtil;
@@ -74,6 +76,14 @@ public interface IQuery<Child, R> {
 
     Child deleted();
 
+    default void clear() {
+        whereList.clear();
+        whereParamMap.clear();
+        orderByList.clear();
+        groupBySet.clear();
+        havingSet.clear();
+    }
+
     default void where(String column, SqlKeyword sqlKeyword, Object value) {
         String propertyName = ComUtil.underline2Hump(column);
         whereList.add(Constant.BRACKETS_LEFT + String.join(Constant.SPACE, column, sqlKeyword.get(), Constant.PARAM_BRACES_LEFT + Constant.QUERY.paramName + Constant.DOT + Constant.QUERY.paramPrefix + Constant.DOT + propertyName + Constant.PARAM_BRACES_RIGHT) + Constant.BRACKETS_RIGHT);
@@ -85,6 +95,31 @@ public interface IQuery<Child, R> {
         whereList.add(Constant.BRACKETS_LEFT + String.join(Constant.SPACE, column, SqlKeyword.BETWEEN.get(), Constant.PARAM_BRACES_LEFT + Constant.QUERY.paramName + Constant.DOT + Constant.QUERY.paramPrefix + Constant.DOT + propertyName + betweenStart + Constant.PARAM_BRACES_RIGHT, SqlKeyword.AND.get(), Constant.PARAM_BRACES_LEFT + Constant.QUERY.paramName + Constant.DOT + Constant.QUERY.paramPrefix + Constant.DOT + propertyName + betweenEnd + Constant.PARAM_BRACES_RIGHT) + Constant.BRACKETS_RIGHT);
         whereParamMap.put(propertyName + betweenStart, valueStart);
         whereParamMap.put(propertyName + betweenEnd, valueEnd);
+    }
+
+    default <T> void assign(T t) {
+        Arrays.stream(t.getClass().getDeclaredFields()).forEach(field -> {
+            if (field.isAnnotationPresent(QueryOpr.class)) {
+                try {
+                    field.setAccessible(true);
+
+                    String column = ComUtil.hump2Underline(field.getName());
+                    Object value = field.get(t);
+                    QueryOpr queryOpr = field.getDeclaredAnnotation(QueryOpr.class);
+                    SqlOprEnum sqlOprEnum = queryOpr.value();
+                    switch (sqlOprEnum) {
+                        case EQ:
+                            where(column, SqlKeyword.EQ, value);
+                            break;
+                        case NOT_EQ:
+                            where(column, SqlKeyword.NOT_EQ, value);
+                            break;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**

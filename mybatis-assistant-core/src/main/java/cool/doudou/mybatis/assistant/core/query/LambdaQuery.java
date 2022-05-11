@@ -16,6 +16,16 @@ import java.util.stream.Collectors;
  * @since 2022/4/20
  */
 public class LambdaQuery<T> implements IQuery<LambdaQuery<T>, SFunction<T>> {
+    public LambdaQuery() {
+        this.clear();
+    }
+
+    public LambdaQuery(T t) {
+        this.clear();
+
+        this.assign(t);
+    }
+
     @Override
     public LambdaQuery<T> eq(SFunction<T> column, Object value) {
         this.where(FunctionGetter.name(column), SqlKeyword.EQ, value);

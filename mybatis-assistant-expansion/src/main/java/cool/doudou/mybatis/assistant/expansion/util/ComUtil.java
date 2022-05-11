@@ -1,5 +1,8 @@
 package cool.doudou.mybatis.assistant.expansion.util;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * ComUtil
  *
@@ -7,6 +10,9 @@ package cool.doudou.mybatis.assistant.expansion.util;
  * @since 2022/4/19
  */
 public class ComUtil {
+    private static final Pattern linePattern = Pattern.compile("_(\\w)");
+    private static final Pattern humpPattern = Pattern.compile("[A-Z]");
+
     /**
      * 下划线 转 驼峰
      *
@@ -14,16 +20,29 @@ public class ComUtil {
      * @return 驼峰字符串
      */
     public static String underline2Hump(String str) {
-        StringBuilder sbHump = new StringBuilder();
-        String[] strArr = str.toLowerCase().split("_");
-        for (int i = 0, len = strArr.length; i < len; i++) {
-            if (i == 0) {
-                sbHump.append(strArr[i]);
-            } else {
-                sbHump.append(upperFirst(strArr[i]));
-            }
+        Matcher matcher = linePattern.matcher(str);
+        StringBuilder sb = new StringBuilder();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
         }
-        return sbHump.toString();
+        matcher.appendTail(sb);
+        return sb.toString();
+    }
+
+    /**
+     * 驼峰 转 下划线
+     *
+     * @param str 驼峰字符串
+     * @return 下划线字符串
+     */
+    public static String hump2Underline(String str) {
+        Matcher matcher = humpPattern.matcher(str);
+        StringBuilder sb = new StringBuilder();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, "_" + matcher.group(0).toLowerCase());
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
     }
 
     /**

@@ -22,33 +22,33 @@ import ${package.parent}#if($package.module!='').${package.module}#end.${package
 public class ${instance.controllerClass} {
     private ${instance.serviceClass} ${instance.service};
 
+    @ApiOperation(value = "根据 id 查询记录", notes = "记录Id")
+    @GetMapping("/getById")
+    public ${instance.entityClass} getById(@RequestParam Long id) {
+        return ${instance.service}.getById(id);
+    }
+
     @ApiOperation(value = "分页查询", notes = "分页参数、实体查询条件")
     @PostMapping("/page")
     public PageInfo<${instance.entityClass}> page(@RequestBody PageDTO<${instance.entityClass}> pageDTO) {
         return ${instance.service}.page(pageDTO.page(), pageDTO.data());
     }
 
-    @ApiOperation(value = "根据 id 查询记录", notes = "记录Id")
-    @GetMapping("/get")
-    public ${instance.entityClass} get(@RequestParam Long id) {
-        return ${instance.service}.get(id);
-    }
-
     @ApiOperation(value = "添加记录", notes = "实体记录")
     @PostMapping("/add")
-    public int add(@RequestBody ${instance.entityClass} ${instance.entity}) {
+    public boolean add(@RequestBody ${instance.entityClass} ${instance.entity}) {
         return ${instance.service}.add(${instance.entity});
     }
 
     @ApiOperation(value = "编辑记录", notes = "实体记录")
     @PostMapping("/edit")
-    public int edit(@RequestBody ${instance.entityClass} ${instance.entity}) {
+    public boolean edit(@RequestBody ${instance.entityClass} ${instance.entity}) {
         return ${instance.service}.edit(${instance.entity});
     }
 
     @ApiOperation(value = "根据 ids 删除记录", notes = "记录Ids")
     @PostMapping("/delete")
-    public int delete(@RequestBody String ids) {
+    public boolean delete(@RequestBody String ids) {
         return ${instance.service}.delete(ids);
     }
 }
