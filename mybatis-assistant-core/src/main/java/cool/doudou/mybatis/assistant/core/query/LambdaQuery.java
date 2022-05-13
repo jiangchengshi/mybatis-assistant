@@ -18,10 +18,14 @@ import java.util.stream.Collectors;
 public class LambdaQuery<T> implements IQuery<LambdaQuery<T>, SFunction<T>> {
     public LambdaQuery() {
         this.clear();
+
+        this.where("deleted", SqlKeyword.EQ, 0);
     }
 
     public LambdaQuery(T t) {
         this.clear();
+
+        this.where("deleted", SqlKeyword.EQ, 0);
 
         this.assign(t);
     }
@@ -132,12 +136,6 @@ public class LambdaQuery<T> implements IQuery<LambdaQuery<T>, SFunction<T>> {
     @Override
     public LambdaQuery<T> tenant(SFunction<T> column, Object tenantId) {
         this.where(FunctionGetter.name(column), SqlKeyword.EQ, tenantId);
-        return this;
-    }
-
-    @Override
-    public LambdaQuery<T> deleted() {
-        this.where("deleted", SqlKeyword.EQ, 0);
         return this;
     }
 }

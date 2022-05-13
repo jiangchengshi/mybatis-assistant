@@ -1,6 +1,6 @@
 package cool.doudou.mybatiis.assistant.annotation;
 
-import cool.doudou.mybatiis.assistant.annotation.enums.SqlOprEnum;
+import cool.doudou.mybatiis.assistant.annotation.enums.QueryOprEnum;
 
 import java.lang.annotation.*;
 
@@ -13,6 +13,6 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface QueryOpr {
-    SqlOprEnum value();
+public @interface QueryInfo {
+    QueryOprEnum opr();
 }

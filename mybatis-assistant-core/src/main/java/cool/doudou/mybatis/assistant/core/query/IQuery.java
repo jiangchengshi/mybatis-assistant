@@ -1,7 +1,7 @@
 package cool.doudou.mybatis.assistant.core.query;
 
-import cool.doudou.mybatiis.assistant.annotation.QueryOpr;
-import cool.doudou.mybatiis.assistant.annotation.enums.SqlOprEnum;
+import cool.doudou.mybatiis.assistant.annotation.QueryInfo;
+import cool.doudou.mybatiis.assistant.annotation.enums.QueryOprEnum;
 import cool.doudou.mybatis.assistant.core.Constant;
 import cool.doudou.mybatis.assistant.core.enums.SqlKeyword;
 import cool.doudou.mybatis.assistant.expansion.util.ComUtil;
@@ -74,8 +74,6 @@ public interface IQuery<Child, R> {
 
     Child tenant(R column, Object tenantId);
 
-    Child deleted();
-
     default void clear() {
         whereList.clear();
         whereParamMap.clear();
@@ -98,28 +96,35 @@ public interface IQuery<Child, R> {
     }
 
     default <T> void assign(T t) {
-        Arrays.stream(t.getClass().getDeclaredFields()).forEach(field -> {
-            if (field.isAnnotationPresent(QueryOpr.class)) {
+        if (t != null) {
+            Arrays.stream(t.getClass().getDeclaredFields()).forEach(field -> {
                 try {
-                    field.setAccessible(true);
+                    if (field.isAnnotationPresent(QueryInfo.class)) {
+                        field.setAccessible(true);
 
-                    String column = ComUtil.hump2Underline(field.getName());
-                    Object value = field.get(t);
-                    QueryOpr queryOpr = field.getDeclaredAnnotation(QueryOpr.class);
-                    SqlOprEnum sqlOprEnum = queryOpr.value();
-                    switch (sqlOprEnum) {
-                        case EQ:
-                            where(column, SqlKeyword.EQ, value);
-                            break;
-                        case NOT_EQ:
-                            where(column, SqlKeyword.NOT_EQ, value);
-                            break;
+                        Object value = field.get(t);
+                        if (value != null) {
+                            String column = ComUtil.hump2Underline(field.getName());
+
+                            QueryInfo queryInfo = field.getDeclaredAnnotation(QueryInfo.class);
+                            QueryOprEnum queryOprEnum = queryInfo.opr();
+                            switch (queryOprEnum) {
+                                case EQ:
+                                    where(column, SqlKeyword.EQ, value);
+                                    break;
+                                case NOT_EQ:
+                                    where(column, SqlKeyword.NOT_EQ, value);
+                                    break;
+                                default:
+                                    System.err.println("opr[" + queryOprEnum + "] match fail");
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-        });
+            });
+        }
     }
 
     /**

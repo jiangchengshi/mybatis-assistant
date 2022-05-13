@@ -1,11 +1,11 @@
 package cool.doudou.mybatiis.assistant.annotation.enums;
 
 /**
- * SqlOprEnum
+ * QueryOprEnum
  *
  * @author jiangcs
  * @since 2022/5/11
  */
-public enum SqlOprEnum {
+public enum QueryOprEnum {
     EQ, NOT_EQ
 }

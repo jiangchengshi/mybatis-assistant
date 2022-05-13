@@ -1,5 +1,7 @@
 package cool.doudou.mybatis.assistant.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDateTime;
 
 /**
@@ -36,6 +38,7 @@ public class BaseEntity {
     /**
      * 逻辑删除：0 正常，-1 删除
      */
+    @JsonIgnore
     private Integer deleted;
 
     public Long getId() {

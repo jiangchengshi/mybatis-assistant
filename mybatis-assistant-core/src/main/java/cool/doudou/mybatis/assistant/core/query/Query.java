@@ -15,10 +15,14 @@ import java.util.Collection;
 public class Query<T> implements IQuery<Query<T>, String> {
     public Query() {
         this.clear();
+
+        this.where("deleted", SqlKeyword.EQ, 0);
     }
 
     public Query(T t) {
         this.clear();
+
+        this.where("deleted", SqlKeyword.EQ, 0);
 
         this.assign(t);
     }
@@ -128,12 +132,6 @@ public class Query<T> implements IQuery<Query<T>, String> {
     @Override
     public Query<T> tenant(String column, Object tenantId) {
         this.where(column, SqlKeyword.EQ, tenantId);
-        return this;
-    }
-
-    @Override
-    public Query<T> deleted() {
-        this.where("deleted", SqlKeyword.EQ, 0);
         return this;
     }
 }
