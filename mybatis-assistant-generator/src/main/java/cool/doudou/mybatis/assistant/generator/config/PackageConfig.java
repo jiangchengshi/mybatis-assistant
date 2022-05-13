@@ -73,7 +73,7 @@ public class PackageConfig {
             return this.controller;
         } else if (fileName.endsWith(Constant.SERVICE + ".java")) {
             return this.service;
-        } else if (fileName.endsWith(Constant.MAPPER + ".java") || fileName.endsWith(Constant.MAPPER + ".xml")) {
+        } else if (fileName.endsWith(Constant.MAPPER + ".java")) {
             return this.mapper;
         } else {
             return this.entity;

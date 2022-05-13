@@ -52,7 +52,7 @@ public class QueryInterceptor implements Interceptor {
                 // Count SQL
                 BoundSql countBoundSql = dialectHandler.getCountSql(mappedStatement, parameterObject, boundSql, additionalParameterMap);
                 PreparedStatement preparedStatement = connection.prepareStatement(countBoundSql.getSql());
-                ParameterHandler parameterHandler = new DefaultParameterHandler(mappedStatement, parameterObject, boundSql);
+                ParameterHandler parameterHandler = new DefaultParameterHandler(mappedStatement, parameterObject, countBoundSql);
                 parameterHandler.setParameters(preparedStatement);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 long count = 0;

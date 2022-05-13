@@ -16,7 +16,10 @@ import java.util.Set;
 public class MySqlDialectHandler implements IDialectHandler {
     @Override
     public BoundSql getCountSql(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql, Map<String, Object> additionalParameterMap) {
-        String countSql = "SELECT COUNT(*) FROM (" + boundSql.getSql() + ") TMP";
+//        String countSql = "SELECT COUNT(*) FROM (" + boundSql.getSql() + ") TMP";
+        String countSql = boundSql.getSql();
+        countSql = "SELECT COUNT(*) AS count " + countSql.substring(countSql.toUpperCase().indexOf("FROM"));
+
         // todo 去掉 order by
         // todo 优化 left join
         BoundSql countBoundSql = new BoundSql(mappedStatement.getConfiguration(), countSql, boundSql.getParameterMappings(), parameterObject);
@@ -34,7 +37,7 @@ public class MySqlDialectHandler implements IDialectHandler {
         // offset，count
         int offset = (pageNum - 1) * pageSize;
 
-        String pageSql = "SELECT * FROM (" + boundSql.getSql() + " LIMIT " + offset + "," + pageSize + ") TMP";
+        String pageSql = "SELECT * FROM (" + boundSql.getSql() + " LIMIT " + offset + "," + pageSize + ") AS TMP";
         BoundSql pageBoundSql = new BoundSql(mappedStatement.getConfiguration(), pageSql, boundSql.getParameterMappings(), parameterObject);
 
         // 参数

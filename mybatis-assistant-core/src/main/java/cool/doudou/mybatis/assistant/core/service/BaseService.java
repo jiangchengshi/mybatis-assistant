@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author jiangcs
  * @since 2022/5/6
  */
-public class BaseService<M extends BaseMapper<T>, T> {
+public class BaseService<M extends BaseMapper<T>, T> extends SuperService {
     @Autowired
     private M baseMapper;
 
@@ -50,36 +50,16 @@ public class BaseService<M extends BaseMapper<T>, T> {
     }
 
     /**
-     * 添加记录
-     *
-     * @param t 实体参数
-     * @return boolean
-     */
-    public boolean add(T t) {
-        return retBool(baseMapper.insert(t));
-    }
-
-    /**
-     * 编辑记录
-     *
-     * @param t 实体参数
-     * @return boolean
-     */
-    public boolean edit(T t) {
-        return retBool(baseMapper.update(t));
-    }
-
-    /**
      * 根据 ids 删除记录
      *
      * @param ids 记录Ids
      * @return int
      */
     public boolean delete(String ids) {
-        return retBool(baseMapper.deleteByIds(ids));
+        return retBoolean(baseMapper.deleteByIds(ids));
     }
 
-    private boolean retBool(int count) {
-        return count > 0;
+    public M baseMapper() {
+        return this.baseMapper;
     }
 }
