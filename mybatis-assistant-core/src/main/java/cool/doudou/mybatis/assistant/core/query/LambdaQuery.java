@@ -5,8 +5,7 @@ import cool.doudou.mybatis.assistant.core.enums.SqlKeyword;
 import cool.doudou.mybatis.assistant.core.functions.FunctionGetter;
 import cool.doudou.mybatis.assistant.core.functions.SFunction;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -15,7 +14,7 @@ import java.util.stream.Collectors;
  * @author jiangcs
  * @since 2022/4/20
  */
-public class LambdaQuery<T> implements IQuery<LambdaQuery<T>, SFunction<T>> {
+public class LambdaQuery<T> extends BaseQuery implements IQuery<LambdaQuery<T>, SFunction<T>> {
     public LambdaQuery() {
         this.clear();
 
@@ -104,32 +103,32 @@ public class LambdaQuery<T> implements IQuery<LambdaQuery<T>, SFunction<T>> {
 
     @Override
     public LambdaQuery<T> asc(SFunction<T> column) {
-        orderByList.add(String.join(Constant.SPACE, FunctionGetter.name(column), SqlKeyword.ASC.get()));
+        this.orderBy(FunctionGetter.name(column), SqlKeyword.ASC);
         return this;
     }
 
     @Override
     public LambdaQuery<T> desc(SFunction<T> column) {
-        orderByList.add(String.join(Constant.SPACE, FunctionGetter.name(column), SqlKeyword.DESC.get()));
+        this.orderBy(FunctionGetter.name(column), SqlKeyword.DESC);
         return this;
     }
 
     @Override
     public LambdaQuery<T> groupBy(SFunction<T> column) {
-        groupBySet.add(FunctionGetter.name(column));
+        this.groupBy(new HashSet<>(List.of(Objects.requireNonNull(FunctionGetter.name(column)))));
         return this;
     }
 
     @SafeVarargs
     @Override
     public final LambdaQuery<T> groupBy(SFunction<T>... columns) {
-        groupBySet.addAll(Arrays.stream(columns).map(FunctionGetter::name).collect(Collectors.toSet()));
+        this.groupBy(Arrays.stream(columns).map(FunctionGetter::name).collect(Collectors.toSet()));
         return this;
     }
 
     @Override
     public LambdaQuery<T> having(SFunction<T> column, String opr, Object value) {
-        havingSet.add(String.join(Constant.SPACE, FunctionGetter.name(column), opr, String.valueOf(value)));
+        this.havingBy(FunctionGetter.name(column), opr, value);
         return this;
     }
 
