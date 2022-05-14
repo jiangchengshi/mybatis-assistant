@@ -54,21 +54,10 @@ public class QueryInterceptor implements Interceptor {
                 PreparedStatement preparedStatement = connection.prepareStatement(countBoundSql.getSql());
                 ParameterHandler parameterHandler = new DefaultParameterHandler(mappedStatement, parameterObject, countBoundSql);
                 parameterHandler.setParameters(preparedStatement);
-                ResultSet resultSet = null;
                 long count = 0;
-                try {
-                    resultSet = preparedStatement.executeQuery();
-                    if (resultSet.next()) {
-                        count = resultSet.getLong(1);
-                    }
-                    page.setTotal(count);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    assert resultSet != null;
-                    resultSet.close();
-                    preparedStatement.close();
-                    connection.close();
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    count = resultSet.getLong(1);
                 }
                 if (count > 0) {
                     // 分页 SQL
@@ -76,6 +65,7 @@ public class QueryInterceptor implements Interceptor {
                     // 覆盖boundSql
                     metaObject.setValue("delegate.boundSql", pageBoundSql);
                 }
+                page.setTotal(count);
             }
         }
         return invocation.proceed();
