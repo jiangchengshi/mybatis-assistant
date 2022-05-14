@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2022/4/21
  */
 public class FunctionGetter {
-    public static Map<Class, SerializedLambda> LAMBDA_CACHE = new ConcurrentHashMap<>();
+    protected static final Map<Class, SerializedLambda> LAMBDA_CACHE = new ConcurrentHashMap<>();
 
     public static <T> String name(SFunction<T> sFunction) {
         SerializedLambda serializedLambda = getSerializedLambda(sFunction);

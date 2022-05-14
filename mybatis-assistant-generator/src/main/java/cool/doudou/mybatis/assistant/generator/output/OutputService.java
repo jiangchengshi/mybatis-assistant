@@ -57,19 +57,26 @@ public class OutputService {
                 parentFile.mkdirs();
             }
 
+            FileWriter writer = null;
             try {
                 File file = new File(parentFile, fileName);
                 if (!file.exists() || (file.exists() && this.globalConfig.isCover())) {
-                    FileWriter writer = new FileWriter(file);
+                    writer = new FileWriter(file);
                     Template template = Velocity.getTemplate(templateName, StandardCharsets.UTF_8.name());
                     template.merge(new VelocityContext(contextMap), writer);
-                    writer.flush();
-                    writer.close();
                 } else {
                     System.err.println("file[" + file.getAbsolutePath() + "] exists.");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    assert writer != null;
+                    writer.flush();
+                    writer.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 

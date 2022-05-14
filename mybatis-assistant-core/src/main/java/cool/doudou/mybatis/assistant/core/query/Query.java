@@ -5,6 +5,8 @@ import cool.doudou.mybatis.assistant.core.enums.SqlKeyword;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * 查询实体
@@ -12,7 +14,7 @@ import java.util.Collection;
  * @author jiangcs
  * @since 2022/4/20
  */
-public class Query<T> implements IQuery<Query<T>, String> {
+public class Query<T> extends BaseQuery implements IQuery<Query<T>, String> {
     public Query() {
         this.clear();
 
@@ -94,38 +96,38 @@ public class Query<T> implements IQuery<Query<T>, String> {
     }
 
     @Override
-    public Query between(String column, Object valueStart, Object valueEnd) {
+    public Query<T> between(String column, Object valueStart, Object valueEnd) {
         this.whereBetween(column, valueStart, valueEnd);
         return this;
     }
 
     @Override
     public Query<T> asc(String column) {
-        orderByList.add(String.join(Constant.SPACE, column, SqlKeyword.ASC.get()));
+        this.orderBy(column, SqlKeyword.ASC);
         return this;
     }
 
     @Override
     public Query<T> desc(String column) {
-        orderByList.add(String.join(Constant.SPACE, column, SqlKeyword.DESC.get()));
+        this.orderBy(column, SqlKeyword.DESC);
         return this;
     }
 
     @Override
     public Query<T> groupBy(String column) {
-        groupBySet.add(column);
+        this.groupBy(new HashSet<>(List.of(column)));
         return this;
     }
 
     @Override
-    public Query<T> groupBy(String... column) {
-        groupBySet.addAll(Arrays.asList(column));
+    public Query<T> groupBy(String... columns) {
+        this.groupBy(new HashSet<>(Arrays.asList(columns)));
         return this;
     }
 
     @Override
     public Query<T> having(String column, String opr, Object value) {
-        havingSet.add(String.join(Constant.SPACE, column, opr, String.valueOf(value)));
+        this.havingBy(column, opr, value);
         return this;
     }
 

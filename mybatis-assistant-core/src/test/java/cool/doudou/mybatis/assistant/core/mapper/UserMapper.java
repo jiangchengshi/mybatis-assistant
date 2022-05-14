@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Mapper
 public interface UserMapper {
-    List<User> selectList(@Param("q") Query query);
+    List<User> selectList(@Param("q") Query<User> query);
 
     List<User> selectPage(@Param("pg") Page page, @Param("q") LambdaQuery<User> lambdaQuery);
 

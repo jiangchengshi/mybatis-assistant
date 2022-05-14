@@ -43,7 +43,7 @@ public class MybatisAssistantCoreTest {
             sqlSession = MybatisConfigHelper.getSqlSession();
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 
-            Query query = new Query();
+            Query<User> query = new Query<>();
             query.lk("py", "C")
                     .gt("id", 1);
             query.desc("id");

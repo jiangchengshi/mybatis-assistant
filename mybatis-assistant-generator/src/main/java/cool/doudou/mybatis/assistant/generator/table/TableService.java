@@ -67,15 +67,12 @@ public class TableService {
             e.printStackTrace();
         } finally {
             try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
+                assert resultSet != null;
+                resultSet.close();
+
+                assert preparedStatement != null;
+                preparedStatement.close();
+                connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
