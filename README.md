@@ -1,4 +1,17 @@
-## Mybatis Assistant（Mybatis助手）
+# 欢迎使用 Mybatis Assistant
+
+[![Maven](https://img.shields.io/badge/Maven-v1.0.8-blue)](https://search.maven.org/search?q=g:cool.doudou%20a:mybatis-assistant-*)
+[![License](https://img.shields.io/badge/License-Apache%202-4EB1BA.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0)
+
+## 简介
+
+Mybatis助手 - 简化配置，自动生成CURD代码，拦截器带飞！
+
+## 特点
+
+> 配置灵活，基于MybatisO包，没有改变任何框架结构，只为简化； 简单配置，即可实现数据库操作
+
+## 使用指引
 
 1. 引入数据库驱动包（以MySql为里）
 
@@ -32,10 +45,6 @@ spring:
 implementation("cool.doudou:mybatis-assistant-boot-starter:latest")
 ```
 
-> Latest
->
-Version: [![Maven Central](https://img.shields.io/badge/Maven-v1.0.8-blue)](https://search.maven.org/search?q=g:cool.doudou%20a:mybatis-assistant-*)
-
 4. 配置mybatis-assistant属性
 
 ```properties
@@ -49,6 +58,8 @@ mybatis:
   assistant:
     mapper-locations: classpath*:mapper/*Mapper.xml
 ```
+
+## 方法说明
 
 ### 查询
 
@@ -98,7 +109,6 @@ public class MyDeletedHandler implements IDeletedHandler {
 ```
 
 > 逻辑值：
-
 - 0：正常
 - -1：删除
 
@@ -149,6 +159,12 @@ public class CodeGenTests {
 }
 ```
 
-### 鼓励一下，喝杯咖啡
+## 版权
+
+[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
+## 鼓励一下，喝杯咖啡
+
+> 欢迎提出宝贵意见，不断完善 Mybatis-Assistant
 
 ![鼓励一下，喝杯咖啡](https://user-images.githubusercontent.com/21210629/172556262-58955681-f266-4e79-bbdf-3e627193c6aa.jpg)
