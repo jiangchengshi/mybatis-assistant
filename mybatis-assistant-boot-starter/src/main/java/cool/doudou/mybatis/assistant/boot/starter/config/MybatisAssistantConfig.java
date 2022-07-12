@@ -1,11 +1,12 @@
 package cool.doudou.mybatis.assistant.boot.starter.config;
 
-import cool.doudou.mybatis.assistant.boot.starter.Constant;
 import cool.doudou.mybatis.assistant.boot.starter.interceptor.InterceptorFactory;
 import cool.doudou.mybatis.assistant.boot.starter.properties.MybatisAssistantProperties;
+import cool.doudou.mybatis.assistant.core.common.Constant;
 import cool.doudou.mybatis.assistant.core.handler.*;
 import cool.doudou.mybatis.assistant.expansion.dialect.DialectHandlerFactory;
 import cool.doudou.mybatis.assistant.expansion.dialect.IDialectHandler;
+import org.apache.ibatis.logging.stdout.StdOutImpl;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -38,17 +39,26 @@ public class MybatisAssistantConfig {
     @Bean
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+
+        // 设置数据源
         factoryBean.setDataSource(dataSource);
 
+        // 设置SQL映射文件
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
         factoryBean.setMapperLocations(resourcePatternResolver.getResources(mybatisAssistantProperties.getMapperLocations()));
 
+
         // 返回SqlSessionFactory
         SqlSessionFactory sqlSessionFactory = factoryBean.getObject();
+        if (sqlSessionFactory != null) {
+            // 日志
+            if (mybatisAssistantProperties.isLogEnable()) {
+                sqlSessionFactory.getConfiguration().setLogImpl(StdOutImpl.class);
+            }
 
-        // 插件
-        addInterceptor(sqlSessionFactory);
-
+            // 插件
+            addInterceptor(sqlSessionFactory);
+        }
         return sqlSessionFactory;
     }
 

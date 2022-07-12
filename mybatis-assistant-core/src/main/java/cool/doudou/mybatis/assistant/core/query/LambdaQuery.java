@@ -1,6 +1,6 @@
 package cool.doudou.mybatis.assistant.core.query;
 
-import cool.doudou.mybatis.assistant.core.Constant;
+import cool.doudou.mybatis.assistant.core.common.Constant;
 import cool.doudou.mybatis.assistant.core.enums.SqlKeyword;
 import cool.doudou.mybatis.assistant.core.functions.FunctionGetter;
 import cool.doudou.mybatis.assistant.core.functions.SFunction;

@@ -1,6 +1,6 @@
 package cool.doudou.mybatis.assistant.boot.starter.interceptor;
 
-import cool.doudou.mybatis.assistant.boot.starter.Constant;
+import cool.doudou.mybatis.assistant.core.common.Constant;
 import cool.doudou.mybatis.assistant.core.interceptors.DesensitizeInterceptor;
 import cool.doudou.mybatis.assistant.core.interceptors.FillInterceptor;
 import cool.doudou.mybatis.assistant.core.interceptors.QueryInterceptor;

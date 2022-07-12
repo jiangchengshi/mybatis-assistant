@@ -13,8 +13,28 @@
       "description": "mapper文件位置",
       "type": "java.lang.String",
       "defaultValue": "classpath:mapper/*.xml"
+    },
+    {
+      "sourceType": "cool.doudou.mybatis.assistant.boot.starter.properties.MybatisAssistantProperties",
+      "name": "mybatis.assistant.log-enable",
+      "description": "日志是否启用",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
     }
   ],
   "hints": [
+    {
+      "name": "mybatis.assistant.log-enable",
+      "values": [
+        {
+          "value": true,
+          "description": "启用"
+        },
+        {
+          "value": false,
+          "description": "不启用"
+        }
+      ]
+    }
   ]
 }
