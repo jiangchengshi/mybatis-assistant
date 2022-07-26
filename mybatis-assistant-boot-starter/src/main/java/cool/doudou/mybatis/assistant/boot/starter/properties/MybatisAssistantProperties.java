@@ -11,6 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "mybatis.assistant")
 public class MybatisAssistantProperties {
     private String mapperLocations = "classpath*:mapper/*Mapper.xml";
+    private boolean logEnable = false;
 
     public String getMapperLocations() {
         return mapperLocations;
@@ -18,5 +19,13 @@ public class MybatisAssistantProperties {
 
     public void setMapperLocations(String mapperLocations) {
         this.mapperLocations = mapperLocations;
+    }
+
+    public boolean isLogEnable() {
+        return logEnable;
+    }
+
+    public void setLogEnable(boolean logEnable) {
+        this.logEnable = logEnable;
     }
 }

@@ -1,4 +1,4 @@
-package cool.doudou.mybatis.assistant.core;
+package cool.doudou.mybatis.assistant.core.common;
 
 /**
  * Constant
@@ -16,8 +16,20 @@ public class Constant {
     public static final String PARAM_BRACES_LEFT = "#{";
     public static final String PARAM_BRACES_RIGHT = "}";
 
-    public static interface QUERY {
+    /**
+     * 查询参数
+     */
+    public interface QUERY {
         String paramName = "q";
         String paramPrefix = "param";
+    }
+
+    /**
+     * 拦截器名称
+     */
+    public interface InterceptorName {
+        String QUERY = "query";
+        String FILL = "fill";
+        String DESENSITIZE = "desensitize";
     }
 }
