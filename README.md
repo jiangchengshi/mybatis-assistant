@@ -147,10 +147,10 @@ public class User {
 > 测试用例（推荐）
 
 ```java
-public class CodeGenTests {
+public class CodeTests {
     @Test
     public void execute() {
-        CodeGenerator.create("192.168.13.213", 3336, "root", "1234.abcd")
+        CodeHelper.build("192.168.13.213", 3336, "root", "1234.abcd")
                 .globalConfig(new GlobalConfig().author("test"))
                 .packageConfig(new PackageConfig().module("user"))
                 .tableConfig(new TableConfig().schema("mybatis-assistant").nameList("sys_user"))

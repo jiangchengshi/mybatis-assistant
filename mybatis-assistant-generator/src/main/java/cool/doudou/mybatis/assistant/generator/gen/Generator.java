@@ -1,4 +1,4 @@
-package cool.doudou.mybatis.assistant.generator;
+package cool.doudou.mybatis.assistant.generator.gen;
 
 import cool.doudou.mybatis.assistant.expansion.dialect.DialectHandlerFactory;
 import cool.doudou.mybatis.assistant.expansion.dialect.IDialectHandler;
@@ -14,12 +14,12 @@ import org.apache.velocity.app.Velocity;
 import java.util.Properties;
 
 /**
- * CodeGenerator
+ * Generator
  *
  * @author jiangcs
  * @since 2022/4/9
  */
-public class CodeGenerator {
+public class Generator {
     /**
      * 数据源配置
      */
@@ -37,28 +37,24 @@ public class CodeGenerator {
      */
     private TableConfig tableConfig;
 
-    public CodeGenerator(DataSourceConfig dataSourceConfig) {
-        this.dataSourceConfig = dataSourceConfig;
+    public Generator(String ip, int port, String user, String password) {
+        this.dataSourceConfig = new DataSourceConfig(ip, port, user, password);
         this.globalConfig = new GlobalConfig();
         this.packageConfig = new PackageConfig();
         this.tableConfig = new TableConfig();
     }
 
-    public static CodeGenerator create(String ip, int port, String user, String password) {
-        return new CodeGenerator(new DataSourceConfig(ip, port, user, password));
-    }
-
-    public CodeGenerator globalConfig(GlobalConfig globalConfig) {
+    public Generator globalConfig(GlobalConfig globalConfig) {
         this.globalConfig = globalConfig;
         return this;
     }
 
-    public CodeGenerator packageConfig(PackageConfig packageConfig) {
+    public Generator packageConfig(PackageConfig packageConfig) {
         this.packageConfig = packageConfig;
         return this;
     }
 
-    public CodeGenerator tableConfig(TableConfig tableConfig) {
+    public Generator tableConfig(TableConfig tableConfig) {
         this.tableConfig = tableConfig;
         return this;
     }
