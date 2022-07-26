@@ -1,2 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 cool.doudou.mybatis.assistant.boot.starter.auto.configuration.MybatisAssistantAutoConfiguration
