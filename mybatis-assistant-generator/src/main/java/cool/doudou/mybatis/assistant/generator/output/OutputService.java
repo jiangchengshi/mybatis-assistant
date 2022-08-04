@@ -48,9 +48,17 @@ public class OutputService {
             if (templateName.endsWith("java.vm")) {
                 parentPath = this.globalConfig.getOutputDir() + File.separator + "src" + File.separator + "main" + File.separator + "java";
                 packagePath = this.packageConfig.getParent().replaceAll("\\.", File.separator) + File.separator + this.packageConfig.getPath(fileName);
-            } else {
+            } else if (templateName.endsWith("xml.vm")) {
                 parentPath = this.globalConfig.getOutputDir() + File.separator + "src" + File.separator + "main" + File.separator + "resources";
                 packagePath = "mapper";
+            } else if (templateName.equals("api.vm")) {
+                parentPath = this.globalConfig.getOutputDir() + File.separator + "api";
+                packagePath = "mapper";
+            } else if (templateName.endsWith("vue.vm")) {
+                parentPath = this.globalConfig.getOutputDir() + File.separator + "vue";
+                packagePath = "mapper";
+            } else {
+                continue;
             }
             File parentFile = new File(parentPath + File.separator + packagePath);
             if (!parentFile.exists()) {
@@ -159,6 +167,7 @@ public class OutputService {
                 Property property = new Property();
                 property.setName(ComUtil.underline2Hump(columnName));
                 property.setJavaType(ComUtil.convert2JavaType(column.getDataType()));
+                property.setNotNull("NO".equals(column.getNullable()));
                 property.setComment(column.getComment());
                 propertyList.add(property);
 
@@ -178,6 +187,13 @@ public class OutputService {
                         break;
                     case "Blob":
                         importPackageSet.add("java.sql.Blob");
+                }
+
+                // 引入参数校验分组包
+                if (property.isNotNull()) {
+                    importPackageSet.add("javax.validation.constraints.NotNull");
+                    importPackageSet.add("cool.doudou.celery.common.core.validation.Add");
+                    importPackageSet.add("cool.doudou.celery.common.core.validation.Edit");
                 }
             }
         }));

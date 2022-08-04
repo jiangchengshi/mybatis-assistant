@@ -30,13 +30,21 @@ public interface BaseMapper<T> {
     T selectOne(@Param("q") IQuery query);
 
     /**
-     * 查询列表
+     * 查询分页列表
      *
      * @param page  分页参数
      * @param query 查询参数
      * @return 实体记录集合
      */
-    List<T> selectList(@Param("pg") Page page, @Param("q") IQuery query);
+    List<T> selectPage(@Param("pg") Page page, @Param("q") IQuery query);
+
+    /**
+     * 查询列表
+     *
+     * @param query 查询参数
+     * @return 实体记录集合
+     */
+    List<T> selectList(@Param("q") IQuery query);
 
     /**
      * 新增
