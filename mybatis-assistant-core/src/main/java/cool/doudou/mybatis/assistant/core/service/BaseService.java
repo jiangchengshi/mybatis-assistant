@@ -6,6 +6,8 @@ import cool.doudou.mybatis.assistant.core.page.PageInfo;
 import cool.doudou.mybatis.assistant.core.query.LambdaQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * BaseService
  *
@@ -38,7 +40,7 @@ public class BaseService<M extends BaseMapper<T>, T> extends SuperService {
     }
 
     /**
-     * 分页查询
+     * 查询分页列表
      *
      * @param page 分页参数
      * @param t    实体参数
@@ -46,7 +48,18 @@ public class BaseService<M extends BaseMapper<T>, T> extends SuperService {
      */
     public PageInfo<T> page(Page page, T t) {
         LambdaQuery<T> lambdaQuery = new LambdaQuery<>(t);
-        return PageInfo.of(baseMapper.selectList(page, lambdaQuery));
+        return PageInfo.of(baseMapper.selectPage(page, lambdaQuery));
+    }
+
+    /**
+     * 查询列表
+     *
+     * @param t 实体参数
+     * @return PageInfo
+     */
+    public List<T> list(T t) {
+        LambdaQuery<T> lambdaQuery = new LambdaQuery<>(t);
+        return baseMapper.selectList(lambdaQuery);
     }
 
     /**

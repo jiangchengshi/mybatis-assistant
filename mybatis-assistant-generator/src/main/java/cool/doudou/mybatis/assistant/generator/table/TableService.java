@@ -41,7 +41,7 @@ public class TableService {
             if (resultSet.next()) {
                 tableInfo = new TableInfo();
                 tableInfo.setName(tableName);
-                tableInfo.setComment(String.valueOf(resultSet.getObject("TABLE_COMMENT")));
+                tableInfo.setComment(resultSet.getString("TABLE_COMMENT"));
 
                 // 字段信息
                 Column column;
@@ -52,10 +52,11 @@ public class TableService {
                 resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
                     column = new Column();
-                    column.setName(String.valueOf(resultSet.getObject("COLUMN_NAME")));
-                    column.setDataType(String.valueOf(resultSet.getObject("DATA_TYPE")));
-                    column.setComment(String.valueOf(resultSet.getObject("COLUMN_COMMENT")));
-                    column.setKey(String.valueOf(resultSet.getObject("COLUMN_KEY")));
+                    column.setName(resultSet.getString("COLUMN_NAME"));
+                    column.setDataType(resultSet.getString("DATA_TYPE"));
+                    column.setComment(resultSet.getString("COLUMN_COMMENT"));
+                    column.setKey(resultSet.getString("COLUMN_KEY"));
+                    column.setNullable(resultSet.getString("IS_NULLABLE"));
                     columnList.add(column);
                 }
                 tableInfo.setColumnList(columnList);

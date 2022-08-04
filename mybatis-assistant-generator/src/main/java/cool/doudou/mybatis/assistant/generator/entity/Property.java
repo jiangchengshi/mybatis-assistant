@@ -16,6 +16,10 @@ public class Property {
      */
     private String javaType;
     /**
+     * 非空
+     */
+    private boolean notNull;
+    /**
      * 注释
      */
     private String comment;
@@ -34,6 +38,14 @@ public class Property {
 
     public void setJavaType(String javaType) {
         this.javaType = javaType;
+    }
+
+    public boolean isNotNull() {
+        return notNull;
+    }
+
+    public void setNotNull(boolean notNull) {
+        this.notNull = notNull;
     }
 
     public String getComment() {

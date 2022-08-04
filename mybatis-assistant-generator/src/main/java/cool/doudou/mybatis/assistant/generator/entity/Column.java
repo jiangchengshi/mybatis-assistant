@@ -23,6 +23,10 @@ public class Column {
      * 关键字：COLUMN_KEY（PRI、UNI、MUL）
      */
     private String key;
+    /**
+     * 允许空：IS_NULLABLE（YES、NO）
+     */
+    private String nullable;
 
     public String getName() {
         return name;
@@ -54,5 +58,13 @@ public class Column {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getNullable() {
+        return nullable;
+    }
+
+    public void setNullable(String nullable) {
+        this.nullable = nullable;
     }
 }

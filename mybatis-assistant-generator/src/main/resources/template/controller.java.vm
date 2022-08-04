@@ -1,5 +1,7 @@
 package ${package.parent}#if($package.module!='').${package.module}#end.${package.controller};
 
+import cool.doudou.celery.common.core.validation.Add;
+import cool.doudou.celery.common.core.validation.Edit;
 import cool.doudou.celery.upms.service.${instance.serviceClass};
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,13 +38,13 @@ public class ${instance.controllerClass} {
 
     @ApiOperation(value = "添加记录", notes = "实体记录")
     @PostMapping("/add")
-    public boolean add(@RequestBody ${instance.entityClass} ${instance.entity}) {
+    public boolean add(@Validated(Add.class) @RequestBody ${instance.entityClass} ${instance.entity}) {
         return ${instance.service}.add(${instance.entity});
     }
 
     @ApiOperation(value = "编辑记录", notes = "实体记录")
     @PostMapping("/edit")
-    public boolean edit(@RequestBody ${instance.entityClass} ${instance.entity}) {
+    public boolean edit(@Validated(Edit.class) @RequestBody ${instance.entityClass} ${instance.entity}) {
         return ${instance.service}.edit(${instance.entity});
     }
 

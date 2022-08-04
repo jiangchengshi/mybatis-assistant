@@ -21,6 +21,7 @@ import ${pkg};
 public class ${instance.entityClass} extends BaseEntity {
 #foreach($property in ${instance.propertyList})
     @ApiModelProperty("${property.comment}")
+    #if($property.isNotNull)@NotNull(groups = {Add.class, Edit.class})#end
     private ${property.javaType} ${property.name};
 #end
 }

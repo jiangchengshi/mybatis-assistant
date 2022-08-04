@@ -16,7 +16,6 @@ import java.util.Set;
 public class MySqlDialectHandler implements IDialectHandler {
     @Override
     public BoundSql getCountSql(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql, Map<String, Object> additionalParameterMap) {
-//        String countSql = "SELECT COUNT(*) FROM (" + boundSql.getSql() + ") TMP";
         String countSql = boundSql.getSql();
         countSql = "SELECT COUNT(*) AS count " + countSql.substring(countSql.toUpperCase().indexOf("FROM"));
 
