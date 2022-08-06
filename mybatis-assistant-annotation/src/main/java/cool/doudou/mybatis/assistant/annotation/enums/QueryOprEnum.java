@@ -1,4 +1,4 @@
-package cool.doudou.mybatiis.assistant.annotation.enums;
+package cool.doudou.mybatis.assistant.annotation.enums;
 
 /**
  * QueryOprEnum

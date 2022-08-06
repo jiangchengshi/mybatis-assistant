@@ -1,7 +1,7 @@
 package cool.doudou.mybatis.assistant.core.query;
 
-import cool.doudou.mybatiis.assistant.annotation.QueryInfo;
-import cool.doudou.mybatiis.assistant.annotation.enums.QueryOprEnum;
+import cool.doudou.mybatis.assistant.annotation.QueryInfo;
+import cool.doudou.mybatis.assistant.annotation.enums.QueryOprEnum;
 import cool.doudou.mybatis.assistant.core.common.Constant;
 import cool.doudou.mybatis.assistant.core.enums.SqlKeyword;
 import cool.doudou.mybatis.assistant.expansion.util.ComUtil;

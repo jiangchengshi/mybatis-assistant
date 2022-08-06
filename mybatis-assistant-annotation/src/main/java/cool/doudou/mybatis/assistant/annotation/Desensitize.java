@@ -1,4 +1,4 @@
-package cool.doudou.mybatiis.assistant.annotation;
+package cool.doudou.mybatis.assistant.annotation;
 
 import java.lang.annotation.*;
 

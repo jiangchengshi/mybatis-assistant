@@ -1,6 +1,6 @@
 package cool.doudou.mybatis.assistant.core.interceptors;
 
-import cool.doudou.mybatiis.assistant.annotation.Desensitize;
+import cool.doudou.mybatis.assistant.annotation.Desensitize;
 import cool.doudou.mybatis.assistant.core.handler.IDesensitizeHandler;
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
 import org.apache.ibatis.plugin.*;
