@@ -1,6 +1,6 @@
 package cool.doudou.mybatis.assistant.core.entity;
 
-import cool.doudou.mybatiis.assistant.annotation.Desensitize;
+import cool.doudou.mybatis.assistant.annotation.Desensitize;
 
 /**
  * User

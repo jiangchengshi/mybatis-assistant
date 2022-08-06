@@ -1,6 +1,6 @@
-package cool.doudou.mybatiis.assistant.annotation;
+package cool.doudou.mybatis.assistant.annotation;
 
-import cool.doudou.mybatiis.assistant.annotation.enums.QueryOprEnum;
+import cool.doudou.mybatis.assistant.annotation.enums.QueryOprEnum;
 
 import java.lang.annotation.*;
 
