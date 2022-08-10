@@ -143,23 +143,6 @@ public class User {
 - 身份证：idCard => 身份证前三后四
 - 移动电话：phoneNumber => 手机号码前三后四
 
-### 代码生成器
-
-> 测试用例（推荐）
-
-```java
-public class CodeTests {
-    @Test
-    public void execute() {
-        CodeHelper.build("192.168.13.213", 3336, "root", "1234.abcd")
-                .globalConfig(new GlobalConfig().author("test"))
-                .packageConfig(new PackageConfig().module("user"))
-                .tableConfig(new TableConfig().schema("mybatis-assistant").nameList("sys_user"))
-                .execute();
-    }
-}
-```
-
 ## 版权
 
 [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
