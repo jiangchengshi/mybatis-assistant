@@ -2,7 +2,6 @@ description("Starter")
 
 dependencies {
     api project(":mybatis-assistant-core")
-    api project(":mybatis-assistant-generator")
 
     implementation("org.springframework.boot:spring-boot-autoconfigure")
     implementation "org.springframework.boot:spring-boot-starter-jdbc"

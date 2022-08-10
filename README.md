@@ -1,6 +1,6 @@
 # 欢迎使用 Mybatis Assistant
 
-[![Maven](https://img.shields.io/badge/Maven-v2.0.0-blue)](https://search.maven.org/search?q=g:cool.doudou%20a:mybatis-assistant-*)
+[![Maven](https://img.shields.io/badge/Maven-v2.0.1-blue)](https://search.maven.org/search?q=g:cool.doudou%20a:mybatis-assistant-*)
 [![License](https://img.shields.io/badge/License-Apache%202-4EB1BA.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0)
 ![SpringBoot](https://img.shields.io/badge/SpringBoot-v2.7.2-blue)
 
@@ -110,6 +110,7 @@ public class MyDeletedHandler implements IDeletedHandler {
 ```
 
 > 逻辑值：
+
 - 0：正常
 - -1：删除
 
@@ -142,23 +143,6 @@ public class User {
 - 用户名：userName => 用户名前一后一
 - 身份证：idCard => 身份证前三后四
 - 移动电话：phoneNumber => 手机号码前三后四
-
-### 代码生成器
-
-> 测试用例（推荐）
-
-```java
-public class CodeTests {
-    @Test
-    public void execute() {
-        CodeHelper.build("192.168.13.213", 3336, "root", "1234.abcd")
-                .globalConfig(new GlobalConfig().author("test"))
-                .packageConfig(new PackageConfig().module("user"))
-                .tableConfig(new TableConfig().schema("mybatis-assistant").nameList("sys_user"))
-                .execute();
-    }
-}
-```
 
 ## 版权
 

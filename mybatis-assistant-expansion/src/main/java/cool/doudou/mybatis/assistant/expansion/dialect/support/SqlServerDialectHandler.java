@@ -22,19 +22,4 @@ public class SqlServerDialectHandler implements IDialectHandler {
     public BoundSql getPageSql(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql, Map<String, Object> additionalParameterMap, int pageNum, int pageSize) {
         return null;
     }
-
-    @Override
-    public String getDriverClassName() {
-        return null;
-    }
-
-    @Override
-    public String getTableSql() {
-        return null;
-    }
-
-    @Override
-    public String getColumnSql() {
-        return null;
-    }
 }
