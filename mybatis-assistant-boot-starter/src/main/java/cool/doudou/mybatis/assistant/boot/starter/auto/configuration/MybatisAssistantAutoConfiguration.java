@@ -1,13 +1,10 @@
 package cool.doudou.mybatis.assistant.boot.starter.auto.configuration;
 
 import cool.doudou.mybatis.assistant.boot.starter.config.MybatisAssistantConfig;
-import cool.doudou.mybatis.assistant.boot.starter.helper.CodeHelper;
 import cool.doudou.mybatis.assistant.boot.starter.properties.MybatisAssistantProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -20,9 +17,4 @@ import org.springframework.context.annotation.Import;
 @Import({DataSourceAutoConfiguration.class, MybatisAssistantConfig.class})
 @AutoConfiguration
 public class MybatisAssistantAutoConfiguration {
-    @ConditionalOnMissingBean
-    @Bean
-    public CodeHelper codeHelper() {
-        return new CodeHelper();
-    }
 }
