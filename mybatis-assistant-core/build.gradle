@@ -3,10 +3,11 @@ description("核心包")
 dependencies {
     api project(":mybatis-assistant-annotation")
     api project(":mybatis-assistant-expansion")
-    api("org.mybatis:mybatis:3.5.9")
+
+    api("org.mybatis:mybatis:${depVersion.mybatis}")
     api("org.mybatis:mybatis-spring:2.0.7")
 
-    compileOnly("org.springframework:spring-beans:5.3.18")
+    compileOnly("org.springframework:spring-beans")
     compileOnly("com.fasterxml.jackson.core:jackson-annotations:2.13.1")
 
     testImplementation("mysql:mysql-connector-java:8.0.28")
