@@ -3,6 +3,7 @@ buildscript {
     ext {
         depVersion = [
                 springBoot: "2.7.2",
+                mybatis   : "3.5.10",
                 lombok    : "1.18.24"
         ]
     }
