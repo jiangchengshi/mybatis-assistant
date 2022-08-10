@@ -35,25 +35,4 @@ public interface IDialectHandler {
      * @return BoundSql
      */
     BoundSql getPageSql(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql, Map<String, Object> additionalParameterMap, int pageNum, int pageSize);
-
-    /**
-     * 驱动类名
-     *
-     * @return String
-     */
-    String getDriverClassName();
-
-    /**
-     * 数据表SQL
-     *
-     * @return String
-     */
-    String getTableSql();
-
-    /**
-     * 数据列SQL
-     *
-     * @return String
-     */
-    String getColumnSql();
 }

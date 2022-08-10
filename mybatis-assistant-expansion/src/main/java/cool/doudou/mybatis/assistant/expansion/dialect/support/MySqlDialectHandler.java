@@ -46,19 +46,4 @@ public class MySqlDialectHandler implements IDialectHandler {
         }
         return pageBoundSql;
     }
-
-    @Override
-    public String getDriverClassName() {
-        return "com.mysql.cj.jdbc.Driver";
-    }
-
-    @Override
-    public String getTableSql() {
-        return "SELECT TABLE_COMMENT FROM TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
-    }
-
-    @Override
-    public String getColumnSql() {
-        return "SELECT COLUMN_NAME,DATA_TYPE,COLUMN_COMMENT,COLUMN_KEY FROM COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
-    }
 }
