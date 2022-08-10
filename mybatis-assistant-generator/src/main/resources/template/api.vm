@@ -1,7 +1,0 @@
-import axios from "@/axios";
-
-export const page = () => {
-    return axios.get({
-        url: '/v1/${property.name}/page'
-    });
-}

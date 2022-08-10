@@ -1,6 +1,6 @@
 # 欢迎使用 Mybatis Assistant
 
-[![Maven](https://img.shields.io/badge/Maven-v1.0.11-blue)](https://search.maven.org/search?q=g:cool.doudou%20a:mybatis-assistant-*)
+[![Maven](https://img.shields.io/badge/Maven-v1.0.12-blue)](https://search.maven.org/search?q=g:cool.doudou%20a:mybatis-assistant-*)
 [![License](https://img.shields.io/badge/License-Apache%202-4EB1BA.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0)
 ![SpringBoot](https://img.shields.io/badge/SpringBoot-v2.6.10-blue)
 
