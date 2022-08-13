@@ -57,6 +57,15 @@ subprojects {
     }
 
     dependencies {
+        // log4j2
+        compileOnly("org.springframework.boot:spring-boot-starter-log4j2")
+        compileOnly("org.apache.logging.log4j:log4j-web:2.17.1")
+
+        // lombok
+        compileOnly("org.projectlombok:lombok:${depVersion.lombok}")
+        annotationProcessor("org.projectlombok:lombok:${depVersion.lombok}")
+
+        testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     }
 
     task sourcesJar(type: Jar) {

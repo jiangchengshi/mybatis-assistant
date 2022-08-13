@@ -6,6 +6,7 @@ import cool.doudou.mybatis.assistant.core.common.Constant;
 import cool.doudou.mybatis.assistant.core.handler.*;
 import cool.doudou.mybatis.assistant.expansion.dialect.DialectHandlerFactory;
 import cool.doudou.mybatis.assistant.expansion.dialect.IDialectHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.logging.stdout.StdOutImpl;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -25,6 +26,7 @@ import java.util.Properties;
  * @author jiangcs
  * @since 2022/4/7
  */
+@Slf4j
 public class MybatisAssistantConfig {
     private MybatisAssistantProperties mybatisAssistantProperties;
     private IIdFillHandler idFillHandler;
@@ -73,7 +75,7 @@ public class MybatisAssistantConfig {
                 queryInterceptor.setProperties(properties);
                 sqlSessionFactory.getConfiguration().addInterceptor(queryInterceptor);
 
-                System.out.println("interceptor[" + Constant.InterceptorName.QUERY + "] add ok.");
+                log.info("interceptor[{}] add ok.", Constant.InterceptorName.QUERY);
             }
         }
 
@@ -82,19 +84,19 @@ public class MybatisAssistantConfig {
         if (fillInterceptor != null) {
             // Id处理器
             if (idFillHandler == null) {
-                System.err.println("interceptor[" + Constant.InterceptorName.FILL + "].idFillHandler must be initialized");
+                log.error("interceptor[{}].idFillHandler must be initialized", Constant.InterceptorName.FILL);
             }
             // 字段处理器
             if (fieldFillHandler == null) {
-                System.err.println("interceptor[" + Constant.InterceptorName.FILL + "].fieldFillHandler must be initialized");
+                log.error("interceptor[{}].fieldFillHandler must be initialized", Constant.InterceptorName.FILL);
             }
             // 逻辑处理器
             else if (deletedFillHandler == null) {
-                System.err.println("interceptor[" + Constant.InterceptorName.FILL + "].deletedFillHandler must be initialized");
+                log.error("interceptor[{}].deletedFillHandler must be initialized", Constant.InterceptorName.FILL);
             }
             // 租户处理器
             else if (tenantFillHandler == null) {
-                System.err.println("interceptor[" + Constant.InterceptorName.FILL + "].tenantFillHandler must be initialized");
+                log.error("interceptor[{}].tenantFillHandler must be initialized", Constant.InterceptorName.FILL);
             } else {
                 Properties properties = new Properties();
                 properties.put("idFillHandler", idFillHandler);
@@ -104,7 +106,7 @@ public class MybatisAssistantConfig {
                 fillInterceptor.setProperties(properties);
                 sqlSessionFactory.getConfiguration().addInterceptor(fillInterceptor);
 
-                System.out.println("interceptor[" + Constant.InterceptorName.FILL + "] add ok.");
+                log.info("interceptor[{}] add ok.", Constant.InterceptorName.FILL);
             }
         }
 
@@ -117,7 +119,7 @@ public class MybatisAssistantConfig {
                 desensitizeInterceptor.setProperties(properties);
                 sqlSessionFactory.getConfiguration().addInterceptor(desensitizeInterceptor);
 
-                System.out.println("interceptor[" + Constant.InterceptorName.DESENSITIZE + "] add ok.");
+                log.info("interceptor[{}] add ok.", Constant.InterceptorName.DESENSITIZE);
             }
         }
     }
