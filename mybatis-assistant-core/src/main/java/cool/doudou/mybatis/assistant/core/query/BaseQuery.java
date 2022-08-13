@@ -90,8 +90,6 @@ public class BaseQuery {
                                 case NOT_EQ:
                                     where(column, SqlKeyword.NOT_EQ, value);
                                     break;
-                                default:
-                                    System.err.println("opr[" + queryOprEnum + "] match fail");
                             }
                         }
                     }
